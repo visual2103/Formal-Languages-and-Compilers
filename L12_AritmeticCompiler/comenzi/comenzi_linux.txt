@@ -1,0 +1,4 @@
+# Se inlocuieste -ly -ll din makefile cu -lfl
+
+make build
+make execute TARGET=input.txt

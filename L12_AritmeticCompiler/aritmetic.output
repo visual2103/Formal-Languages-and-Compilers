@@ -1,0 +1,2159 @@
+Terminals unused in grammar
+
+    S_NEWLINE
+    S_FOR
+
+
+Grammar
+
+    0 $accept: file_content $end
+
+    1 file_content: ε
+    2             | statements
+
+    3 statements: statement
+    4           | statement statements
+
+    5 statement: declaration S_SEMICOLON
+    6          | expr S_SEMICOLON
+    7          | IDENTIFIER S_EQUALS expr S_SEMICOLON
+    8          | S_IF S_OBRACE expr S_CBRACE S_LBRACE statements S_RBRACE
+    9          | S_IF S_OBRACE expr S_CBRACE S_LBRACE statements S_RBRACE S_ELSE S_LBRACE statements S_RBRACE
+   10          | S_WHILE S_OBRACE expr S_CBRACE S_LBRACE statements S_RBRACE
+   11          | S_RETURN expr S_SEMICOLON
+   12          | class
+   13          | function
+
+   14 declaration: S_VAR IDENTIFIER S_COLON IDENTIFIER S_EQUALS expr
+   15            | S_VAR IDENTIFIER S_EQUALS expr
+   16            | S_VAR IDENTIFIER S_COLON IDENTIFIER
+
+   17 class: S_CLASS IDENTIFIER S_LBRACE class_body S_RBRACE
+
+   18 class_body: ε
+   19           | class_members
+
+   20 class_members: class_member
+   21              | class_member class_members
+
+   22 class_member: declaration S_SEMICOLON
+   23             | function
+
+   24 function: S_FUNC IDENTIFIER S_OBRACE params S_CBRACE S_ARROW IDENTIFIER S_LBRACE statements S_RBRACE
+   25         | S_FUNC IDENTIFIER S_OBRACE params S_CBRACE S_LBRACE statements S_RBRACE
+
+   26 params: ε
+   27       | IDENTIFIER S_COLON IDENTIFIER
+   28       | IDENTIFIER S_COLON IDENTIFIER S_COMMA params
+
+   29 args: ε
+   30     | expr
+   31     | expr S_COMMA args
+
+   32 expr: NUMBER
+   33     | FLOAT
+   34     | IDENTIFIER
+   35     | STRING
+   36     | IDENTIFIER S_OBRACE args S_CBRACE
+   37     | expr S_DOT IDENTIFIER S_OBRACE args S_CBRACE
+   38     | expr S_PLUS expr
+   39     | expr S_MINUS expr
+   40     | expr S_DIV expr
+   41     | expr S_MUL expr
+   42     | expr S_MOD expr
+   43     | expr S_POW expr
+   44     | S_MINUS expr
+   45     | expr S_EQ expr
+   46     | expr S_NEQ expr
+   47     | expr S_LE expr
+   48     | expr S_GE expr
+   49     | expr S_LT expr
+   50     | expr S_GT expr
+   51     | expr S_AND expr
+   52     | expr S_OR expr
+   53     | S_NOT expr
+   54     | S_OBRACE expr S_CBRACE
+   55     | S_NEW IDENTIFIER S_OBRACE args S_CBRACE
+
+
+Terminals, with rules where they appear
+
+    $end (0) 0
+    error (256)
+    S_NEWLINE (258)
+    NUMBER <integer> (259) 32
+    FLOAT <floatVal> (260) 33
+    IDENTIFIER <strVal> (261) 7 14 15 16 17 24 25 27 28 34 36 37 55
+    STRING <strVal> (262) 35
+    S_CLASS (263) 17
+    S_FUNC (264) 24 25
+    S_VAR (265) 14 15 16
+    S_NEW (266) 55
+    S_RETURN (267) 11
+    S_IF (268) 8 9
+    S_ELSE (269) 9
+    S_WHILE (270) 10
+    S_FOR (271)
+    S_ARROW (272) 24
+    S_COLON (273) 14 16 27 28
+    S_SEMICOLON (274) 5 6 7 11 22
+    S_COMMA (275) 28 31
+    S_LBRACE (276) 8 9 10 17 24 25
+    S_RBRACE (277) 8 9 10 17 24 25
+    S_DOT (278) 37
+    S_EQUALS (279) 7 14 15
+    S_PLUS (280) 38
+    S_MINUS (281) 39 44
+    S_DIV (282) 40
+    S_MOD (283) 42
+    S_MUL (284) 41
+    S_POW (285) 43
+    S_EQ (286) 45
+    S_NEQ (287) 46
+    S_LE (288) 47
+    S_GE (289) 48
+    S_LT (290) 49
+    S_GT (291) 50
+    S_AND (292) 51
+    S_OR (293) 52
+    S_NOT (294) 53
+    S_OBRACE (295) 8 9 10 24 25 36 37 54 55
+    S_CBRACE (296) 8 9 10 24 25 36 37 54 55
+    UMINUS (297)
+
+
+Nonterminals, with rules where they appear
+
+    $accept (43)
+        on left: 0
+    file_content (44)
+        on left: 1 2
+        on right: 0
+    statements <statementNode> (45)
+        on left: 3 4
+        on right: 2 4 8 9 10 24 25
+    statement <statementNode> (46)
+        on left: 5 6 7 8 9 10 11 12 13
+        on right: 3 4
+    declaration <declarationNode> (47)
+        on left: 14 15 16
+        on right: 5 22
+    class <classNode> (48)
+        on left: 17
+        on right: 12
+    class_body <classNode> (49)
+        on left: 18 19
+        on right: 17
+    class_members <classNode> (50)
+        on left: 20 21
+        on right: 19 21
+    class_member <classNode> (51)
+        on left: 22 23
+        on right: 20 21
+    function <functionNode> (52)
+        on left: 24 25
+        on right: 13 23
+    params <paramNode> (53)
+        on left: 26 27 28
+        on right: 24 25 28
+    args <argNode> (54)
+        on left: 29 30 31
+        on right: 31 36 37 55
+    expr <expressionNode> (55)
+        on left: 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55
+        on right: 6 7 8 9 10 11 14 15 30 31 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54
+
+
+State 0
+
+    0 $accept: • file_content $end
+
+    NUMBER      shift, and go to state 1
+    FLOAT       shift, and go to state 2
+    IDENTIFIER  shift, and go to state 3
+    STRING      shift, and go to state 4
+    S_CLASS     shift, and go to state 5
+    S_FUNC      shift, and go to state 6
+    S_VAR       shift, and go to state 7
+    S_NEW       shift, and go to state 8
+    S_RETURN    shift, and go to state 9
+    S_IF        shift, and go to state 10
+    S_WHILE     shift, and go to state 11
+    S_MINUS     shift, and go to state 12
+    S_NOT       shift, and go to state 13
+    S_OBRACE    shift, and go to state 14
+
+    $default  reduce using rule 1 (file_content)
+
+    file_content  go to state 15
+    statements    go to state 16
+    statement     go to state 17
+    declaration   go to state 18
+    class         go to state 19
+    function      go to state 20
+    expr          go to state 21
+
+
+State 1
+
+   32 expr: NUMBER •
+
+    $default  reduce using rule 32 (expr)
+
+
+State 2
+
+   33 expr: FLOAT •
+
+    $default  reduce using rule 33 (expr)
+
+
+State 3
+
+    7 statement: IDENTIFIER • S_EQUALS expr S_SEMICOLON
+   34 expr: IDENTIFIER •
+   36     | IDENTIFIER • S_OBRACE args S_CBRACE
+
+    S_EQUALS  shift, and go to state 22
+    S_OBRACE  shift, and go to state 23
+
+    $default  reduce using rule 34 (expr)
+
+
+State 4
+
+   35 expr: STRING •
+
+    $default  reduce using rule 35 (expr)
+
+
+State 5
+
+   17 class: S_CLASS • IDENTIFIER S_LBRACE class_body S_RBRACE
+
+    IDENTIFIER  shift, and go to state 24
+
+
+State 6
+
+   24 function: S_FUNC • IDENTIFIER S_OBRACE params S_CBRACE S_ARROW IDENTIFIER S_LBRACE statements S_RBRACE
+   25         | S_FUNC • IDENTIFIER S_OBRACE params S_CBRACE S_LBRACE statements S_RBRACE
+
+    IDENTIFIER  shift, and go to state 25
+
+
+State 7
+
+   14 declaration: S_VAR • IDENTIFIER S_COLON IDENTIFIER S_EQUALS expr
+   15            | S_VAR • IDENTIFIER S_EQUALS expr
+   16            | S_VAR • IDENTIFIER S_COLON IDENTIFIER
+
+    IDENTIFIER  shift, and go to state 26
+
+
+State 8
+
+   55 expr: S_NEW • IDENTIFIER S_OBRACE args S_CBRACE
+
+    IDENTIFIER  shift, and go to state 27
+
+
+State 9
+
+   11 statement: S_RETURN • expr S_SEMICOLON
+
+    NUMBER      shift, and go to state 1
+    FLOAT       shift, and go to state 2
+    IDENTIFIER  shift, and go to state 28
+    STRING      shift, and go to state 4
+    S_NEW       shift, and go to state 8
+    S_MINUS     shift, and go to state 12
+    S_NOT       shift, and go to state 13
+    S_OBRACE    shift, and go to state 14
+
+    expr  go to state 29
+
+
+State 10
+
+    8 statement: S_IF • S_OBRACE expr S_CBRACE S_LBRACE statements S_RBRACE
+    9          | S_IF • S_OBRACE expr S_CBRACE S_LBRACE statements S_RBRACE S_ELSE S_LBRACE statements S_RBRACE
+
+    S_OBRACE  shift, and go to state 30
+
+
+State 11
+
+   10 statement: S_WHILE • S_OBRACE expr S_CBRACE S_LBRACE statements S_RBRACE
+
+    S_OBRACE  shift, and go to state 31
+
+
+State 12
+
+   44 expr: S_MINUS • expr
+
+    NUMBER      shift, and go to state 1
+    FLOAT       shift, and go to state 2
+    IDENTIFIER  shift, and go to state 28
+    STRING      shift, and go to state 4
+    S_NEW       shift, and go to state 8
+    S_MINUS     shift, and go to state 12
+    S_NOT       shift, and go to state 13
+    S_OBRACE    shift, and go to state 14
+
+    expr  go to state 32
+
+
+State 13
+
+   53 expr: S_NOT • expr
+
+    NUMBER      shift, and go to state 1
+    FLOAT       shift, and go to state 2
+    IDENTIFIER  shift, and go to state 28
+    STRING      shift, and go to state 4
+    S_NEW       shift, and go to state 8
+    S_MINUS     shift, and go to state 12
+    S_NOT       shift, and go to state 13
+    S_OBRACE    shift, and go to state 14
+
+    expr  go to state 33
+
+
+State 14
+
+   54 expr: S_OBRACE • expr S_CBRACE
+
+    NUMBER      shift, and go to state 1
+    FLOAT       shift, and go to state 2
+    IDENTIFIER  shift, and go to state 28
+    STRING      shift, and go to state 4
+    S_NEW       shift, and go to state 8
+    S_MINUS     shift, and go to state 12
+    S_NOT       shift, and go to state 13
+    S_OBRACE    shift, and go to state 14
+
+    expr  go to state 34
+
+
+State 15
+
+    0 $accept: file_content • $end
+
+    $end  shift, and go to state 35
+
+
+State 16
+
+    2 file_content: statements •
+
+    $default  reduce using rule 2 (file_content)
+
+
+State 17
+
+    3 statements: statement •
+    4           | statement • statements
+
+    NUMBER      shift, and go to state 1
+    FLOAT       shift, and go to state 2
+    IDENTIFIER  shift, and go to state 3
+    STRING      shift, and go to state 4
+    S_CLASS     shift, and go to state 5
+    S_FUNC      shift, and go to state 6
+    S_VAR       shift, and go to state 7
+    S_NEW       shift, and go to state 8
+    S_RETURN    shift, and go to state 9
+    S_IF        shift, and go to state 10
+    S_WHILE     shift, and go to state 11
+    S_MINUS     shift, and go to state 12
+    S_NOT       shift, and go to state 13
+    S_OBRACE    shift, and go to state 14
+
+    $default  reduce using rule 3 (statements)
+
+    statements   go to state 36
+    statement    go to state 17
+    declaration  go to state 18
+    class        go to state 19
+    function     go to state 20
+    expr         go to state 21
+
+
+State 18
+
+    5 statement: declaration • S_SEMICOLON
+
+    S_SEMICOLON  shift, and go to state 37
+
+
+State 19
+
+   12 statement: class •
+
+    $default  reduce using rule 12 (statement)
+
+
+State 20
+
+   13 statement: function •
+
+    $default  reduce using rule 13 (statement)
+
+
+State 21
+
+    6 statement: expr • S_SEMICOLON
+   37 expr: expr • S_DOT IDENTIFIER S_OBRACE args S_CBRACE
+   38     | expr • S_PLUS expr
+   39     | expr • S_MINUS expr
+   40     | expr • S_DIV expr
+   41     | expr • S_MUL expr
+   42     | expr • S_MOD expr
+   43     | expr • S_POW expr
+   45     | expr • S_EQ expr
+   46     | expr • S_NEQ expr
+   47     | expr • S_LE expr
+   48     | expr • S_GE expr
+   49     | expr • S_LT expr
+   50     | expr • S_GT expr
+   51     | expr • S_AND expr
+   52     | expr • S_OR expr
+
+    S_SEMICOLON  shift, and go to state 38
+    S_DOT        shift, and go to state 39
+    S_PLUS       shift, and go to state 40
+    S_MINUS      shift, and go to state 41
+    S_DIV        shift, and go to state 42
+    S_MOD        shift, and go to state 43
+    S_MUL        shift, and go to state 44
+    S_POW        shift, and go to state 45
+    S_EQ         shift, and go to state 46
+    S_NEQ        shift, and go to state 47
+    S_LE         shift, and go to state 48
+    S_GE         shift, and go to state 49
+    S_LT         shift, and go to state 50
+    S_GT         shift, and go to state 51
+    S_AND        shift, and go to state 52
+    S_OR         shift, and go to state 53
+
+
+State 22
+
+    7 statement: IDENTIFIER S_EQUALS • expr S_SEMICOLON
+
+    NUMBER      shift, and go to state 1
+    FLOAT       shift, and go to state 2
+    IDENTIFIER  shift, and go to state 28
+    STRING      shift, and go to state 4
+    S_NEW       shift, and go to state 8
+    S_MINUS     shift, and go to state 12
+    S_NOT       shift, and go to state 13
+    S_OBRACE    shift, and go to state 14
+
+    expr  go to state 54
+
+
+State 23
+
+   36 expr: IDENTIFIER S_OBRACE • args S_CBRACE
+
+    NUMBER      shift, and go to state 1
+    FLOAT       shift, and go to state 2
+    IDENTIFIER  shift, and go to state 28
+    STRING      shift, and go to state 4
+    S_NEW       shift, and go to state 8
+    S_MINUS     shift, and go to state 12
+    S_NOT       shift, and go to state 13
+    S_OBRACE    shift, and go to state 14
+
+    $default  reduce using rule 29 (args)
+
+    args  go to state 55
+    expr  go to state 56
+
+
+State 24
+
+   17 class: S_CLASS IDENTIFIER • S_LBRACE class_body S_RBRACE
+
+    S_LBRACE  shift, and go to state 57
+
+
+State 25
+
+   24 function: S_FUNC IDENTIFIER • S_OBRACE params S_CBRACE S_ARROW IDENTIFIER S_LBRACE statements S_RBRACE
+   25         | S_FUNC IDENTIFIER • S_OBRACE params S_CBRACE S_LBRACE statements S_RBRACE
+
+    S_OBRACE  shift, and go to state 58
+
+
+State 26
+
+   14 declaration: S_VAR IDENTIFIER • S_COLON IDENTIFIER S_EQUALS expr
+   15            | S_VAR IDENTIFIER • S_EQUALS expr
+   16            | S_VAR IDENTIFIER • S_COLON IDENTIFIER
+
+    S_COLON   shift, and go to state 59
+    S_EQUALS  shift, and go to state 60
+
+
+State 27
+
+   55 expr: S_NEW IDENTIFIER • S_OBRACE args S_CBRACE
+
+    S_OBRACE  shift, and go to state 61
+
+
+State 28
+
+   34 expr: IDENTIFIER •
+   36     | IDENTIFIER • S_OBRACE args S_CBRACE
+
+    S_OBRACE  shift, and go to state 23
+
+    $default  reduce using rule 34 (expr)
+
+
+State 29
+
+   11 statement: S_RETURN expr • S_SEMICOLON
+   37 expr: expr • S_DOT IDENTIFIER S_OBRACE args S_CBRACE
+   38     | expr • S_PLUS expr
+   39     | expr • S_MINUS expr
+   40     | expr • S_DIV expr
+   41     | expr • S_MUL expr
+   42     | expr • S_MOD expr
+   43     | expr • S_POW expr
+   45     | expr • S_EQ expr
+   46     | expr • S_NEQ expr
+   47     | expr • S_LE expr
+   48     | expr • S_GE expr
+   49     | expr • S_LT expr
+   50     | expr • S_GT expr
+   51     | expr • S_AND expr
+   52     | expr • S_OR expr
+
+    S_SEMICOLON  shift, and go to state 62
+    S_DOT        shift, and go to state 39
+    S_PLUS       shift, and go to state 40
+    S_MINUS      shift, and go to state 41
+    S_DIV        shift, and go to state 42
+    S_MOD        shift, and go to state 43
+    S_MUL        shift, and go to state 44
+    S_POW        shift, and go to state 45
+    S_EQ         shift, and go to state 46
+    S_NEQ        shift, and go to state 47
+    S_LE         shift, and go to state 48
+    S_GE         shift, and go to state 49
+    S_LT         shift, and go to state 50
+    S_GT         shift, and go to state 51
+    S_AND        shift, and go to state 52
+    S_OR         shift, and go to state 53
+
+
+State 30
+
+    8 statement: S_IF S_OBRACE • expr S_CBRACE S_LBRACE statements S_RBRACE
+    9          | S_IF S_OBRACE • expr S_CBRACE S_LBRACE statements S_RBRACE S_ELSE S_LBRACE statements S_RBRACE
+
+    NUMBER      shift, and go to state 1
+    FLOAT       shift, and go to state 2
+    IDENTIFIER  shift, and go to state 28
+    STRING      shift, and go to state 4
+    S_NEW       shift, and go to state 8
+    S_MINUS     shift, and go to state 12
+    S_NOT       shift, and go to state 13
+    S_OBRACE    shift, and go to state 14
+
+    expr  go to state 63
+
+
+State 31
+
+   10 statement: S_WHILE S_OBRACE • expr S_CBRACE S_LBRACE statements S_RBRACE
+
+    NUMBER      shift, and go to state 1
+    FLOAT       shift, and go to state 2
+    IDENTIFIER  shift, and go to state 28
+    STRING      shift, and go to state 4
+    S_NEW       shift, and go to state 8
+    S_MINUS     shift, and go to state 12
+    S_NOT       shift, and go to state 13
+    S_OBRACE    shift, and go to state 14
+
+    expr  go to state 64
+
+
+State 32
+
+   37 expr: expr • S_DOT IDENTIFIER S_OBRACE args S_CBRACE
+   38     | expr • S_PLUS expr
+   39     | expr • S_MINUS expr
+   40     | expr • S_DIV expr
+   41     | expr • S_MUL expr
+   42     | expr • S_MOD expr
+   43     | expr • S_POW expr
+   44     | S_MINUS expr •
+   45     | expr • S_EQ expr
+   46     | expr • S_NEQ expr
+   47     | expr • S_LE expr
+   48     | expr • S_GE expr
+   49     | expr • S_LT expr
+   50     | expr • S_GT expr
+   51     | expr • S_AND expr
+   52     | expr • S_OR expr
+
+    S_DOT  shift, and go to state 39
+
+    $default  reduce using rule 44 (expr)
+
+
+State 33
+
+   37 expr: expr • S_DOT IDENTIFIER S_OBRACE args S_CBRACE
+   38     | expr • S_PLUS expr
+   39     | expr • S_MINUS expr
+   40     | expr • S_DIV expr
+   41     | expr • S_MUL expr
+   42     | expr • S_MOD expr
+   43     | expr • S_POW expr
+   45     | expr • S_EQ expr
+   46     | expr • S_NEQ expr
+   47     | expr • S_LE expr
+   48     | expr • S_GE expr
+   49     | expr • S_LT expr
+   50     | expr • S_GT expr
+   51     | expr • S_AND expr
+   52     | expr • S_OR expr
+   53     | S_NOT expr •
+
+    S_DOT  shift, and go to state 39
+
+    $default  reduce using rule 53 (expr)
+
+
+State 34
+
+   37 expr: expr • S_DOT IDENTIFIER S_OBRACE args S_CBRACE
+   38     | expr • S_PLUS expr
+   39     | expr • S_MINUS expr
+   40     | expr • S_DIV expr
+   41     | expr • S_MUL expr
+   42     | expr • S_MOD expr
+   43     | expr • S_POW expr
+   45     | expr • S_EQ expr
+   46     | expr • S_NEQ expr
+   47     | expr • S_LE expr
+   48     | expr • S_GE expr
+   49     | expr • S_LT expr
+   50     | expr • S_GT expr
+   51     | expr • S_AND expr
+   52     | expr • S_OR expr
+   54     | S_OBRACE expr • S_CBRACE
+
+    S_DOT     shift, and go to state 39
+    S_PLUS    shift, and go to state 40
+    S_MINUS   shift, and go to state 41
+    S_DIV     shift, and go to state 42
+    S_MOD     shift, and go to state 43
+    S_MUL     shift, and go to state 44
+    S_POW     shift, and go to state 45
+    S_EQ      shift, and go to state 46
+    S_NEQ     shift, and go to state 47
+    S_LE      shift, and go to state 48
+    S_GE      shift, and go to state 49
+    S_LT      shift, and go to state 50
+    S_GT      shift, and go to state 51
+    S_AND     shift, and go to state 52
+    S_OR      shift, and go to state 53
+    S_CBRACE  shift, and go to state 65
+
+
+State 35
+
+    0 $accept: file_content $end •
+
+    $default  accept
+
+
+State 36
+
+    4 statements: statement statements •
+
+    $default  reduce using rule 4 (statements)
+
+
+State 37
+
+    5 statement: declaration S_SEMICOLON •
+
+    $default  reduce using rule 5 (statement)
+
+
+State 38
+
+    6 statement: expr S_SEMICOLON •
+
+    $default  reduce using rule 6 (statement)
+
+
+State 39
+
+   37 expr: expr S_DOT • IDENTIFIER S_OBRACE args S_CBRACE
+
+    IDENTIFIER  shift, and go to state 66
+
+
+State 40
+
+   38 expr: expr S_PLUS • expr
+
+    NUMBER      shift, and go to state 1
+    FLOAT       shift, and go to state 2
+    IDENTIFIER  shift, and go to state 28
+    STRING      shift, and go to state 4
+    S_NEW       shift, and go to state 8
+    S_MINUS     shift, and go to state 12
+    S_NOT       shift, and go to state 13
+    S_OBRACE    shift, and go to state 14
+
+    expr  go to state 67
+
+
+State 41
+
+   39 expr: expr S_MINUS • expr
+
+    NUMBER      shift, and go to state 1
+    FLOAT       shift, and go to state 2
+    IDENTIFIER  shift, and go to state 28
+    STRING      shift, and go to state 4
+    S_NEW       shift, and go to state 8
+    S_MINUS     shift, and go to state 12
+    S_NOT       shift, and go to state 13
+    S_OBRACE    shift, and go to state 14
+
+    expr  go to state 68
+
+
+State 42
+
+   40 expr: expr S_DIV • expr
+
+    NUMBER      shift, and go to state 1
+    FLOAT       shift, and go to state 2
+    IDENTIFIER  shift, and go to state 28
+    STRING      shift, and go to state 4
+    S_NEW       shift, and go to state 8
+    S_MINUS     shift, and go to state 12
+    S_NOT       shift, and go to state 13
+    S_OBRACE    shift, and go to state 14
+
+    expr  go to state 69
+
+
+State 43
+
+   42 expr: expr S_MOD • expr
+
+    NUMBER      shift, and go to state 1
+    FLOAT       shift, and go to state 2
+    IDENTIFIER  shift, and go to state 28
+    STRING      shift, and go to state 4
+    S_NEW       shift, and go to state 8
+    S_MINUS     shift, and go to state 12
+    S_NOT       shift, and go to state 13
+    S_OBRACE    shift, and go to state 14
+
+    expr  go to state 70
+
+
+State 44
+
+   41 expr: expr S_MUL • expr
+
+    NUMBER      shift, and go to state 1
+    FLOAT       shift, and go to state 2
+    IDENTIFIER  shift, and go to state 28
+    STRING      shift, and go to state 4
+    S_NEW       shift, and go to state 8
+    S_MINUS     shift, and go to state 12
+    S_NOT       shift, and go to state 13
+    S_OBRACE    shift, and go to state 14
+
+    expr  go to state 71
+
+
+State 45
+
+   43 expr: expr S_POW • expr
+
+    NUMBER      shift, and go to state 1
+    FLOAT       shift, and go to state 2
+    IDENTIFIER  shift, and go to state 28
+    STRING      shift, and go to state 4
+    S_NEW       shift, and go to state 8
+    S_MINUS     shift, and go to state 12
+    S_NOT       shift, and go to state 13
+    S_OBRACE    shift, and go to state 14
+
+    expr  go to state 72
+
+
+State 46
+
+   45 expr: expr S_EQ • expr
+
+    NUMBER      shift, and go to state 1
+    FLOAT       shift, and go to state 2
+    IDENTIFIER  shift, and go to state 28
+    STRING      shift, and go to state 4
+    S_NEW       shift, and go to state 8
+    S_MINUS     shift, and go to state 12
+    S_NOT       shift, and go to state 13
+    S_OBRACE    shift, and go to state 14
+
+    expr  go to state 73
+
+
+State 47
+
+   46 expr: expr S_NEQ • expr
+
+    NUMBER      shift, and go to state 1
+    FLOAT       shift, and go to state 2
+    IDENTIFIER  shift, and go to state 28
+    STRING      shift, and go to state 4
+    S_NEW       shift, and go to state 8
+    S_MINUS     shift, and go to state 12
+    S_NOT       shift, and go to state 13
+    S_OBRACE    shift, and go to state 14
+
+    expr  go to state 74
+
+
+State 48
+
+   47 expr: expr S_LE • expr
+
+    NUMBER      shift, and go to state 1
+    FLOAT       shift, and go to state 2
+    IDENTIFIER  shift, and go to state 28
+    STRING      shift, and go to state 4
+    S_NEW       shift, and go to state 8
+    S_MINUS     shift, and go to state 12
+    S_NOT       shift, and go to state 13
+    S_OBRACE    shift, and go to state 14
+
+    expr  go to state 75
+
+
+State 49
+
+   48 expr: expr S_GE • expr
+
+    NUMBER      shift, and go to state 1
+    FLOAT       shift, and go to state 2
+    IDENTIFIER  shift, and go to state 28
+    STRING      shift, and go to state 4
+    S_NEW       shift, and go to state 8
+    S_MINUS     shift, and go to state 12
+    S_NOT       shift, and go to state 13
+    S_OBRACE    shift, and go to state 14
+
+    expr  go to state 76
+
+
+State 50
+
+   49 expr: expr S_LT • expr
+
+    NUMBER      shift, and go to state 1
+    FLOAT       shift, and go to state 2
+    IDENTIFIER  shift, and go to state 28
+    STRING      shift, and go to state 4
+    S_NEW       shift, and go to state 8
+    S_MINUS     shift, and go to state 12
+    S_NOT       shift, and go to state 13
+    S_OBRACE    shift, and go to state 14
+
+    expr  go to state 77
+
+
+State 51
+
+   50 expr: expr S_GT • expr
+
+    NUMBER      shift, and go to state 1
+    FLOAT       shift, and go to state 2
+    IDENTIFIER  shift, and go to state 28
+    STRING      shift, and go to state 4
+    S_NEW       shift, and go to state 8
+    S_MINUS     shift, and go to state 12
+    S_NOT       shift, and go to state 13
+    S_OBRACE    shift, and go to state 14
+
+    expr  go to state 78
+
+
+State 52
+
+   51 expr: expr S_AND • expr
+
+    NUMBER      shift, and go to state 1
+    FLOAT       shift, and go to state 2
+    IDENTIFIER  shift, and go to state 28
+    STRING      shift, and go to state 4
+    S_NEW       shift, and go to state 8
+    S_MINUS     shift, and go to state 12
+    S_NOT       shift, and go to state 13
+    S_OBRACE    shift, and go to state 14
+
+    expr  go to state 79
+
+
+State 53
+
+   52 expr: expr S_OR • expr
+
+    NUMBER      shift, and go to state 1
+    FLOAT       shift, and go to state 2
+    IDENTIFIER  shift, and go to state 28
+    STRING      shift, and go to state 4
+    S_NEW       shift, and go to state 8
+    S_MINUS     shift, and go to state 12
+    S_NOT       shift, and go to state 13
+    S_OBRACE    shift, and go to state 14
+
+    expr  go to state 80
+
+
+State 54
+
+    7 statement: IDENTIFIER S_EQUALS expr • S_SEMICOLON
+   37 expr: expr • S_DOT IDENTIFIER S_OBRACE args S_CBRACE
+   38     | expr • S_PLUS expr
+   39     | expr • S_MINUS expr
+   40     | expr • S_DIV expr
+   41     | expr • S_MUL expr
+   42     | expr • S_MOD expr
+   43     | expr • S_POW expr
+   45     | expr • S_EQ expr
+   46     | expr • S_NEQ expr
+   47     | expr • S_LE expr
+   48     | expr • S_GE expr
+   49     | expr • S_LT expr
+   50     | expr • S_GT expr
+   51     | expr • S_AND expr
+   52     | expr • S_OR expr
+
+    S_SEMICOLON  shift, and go to state 81
+    S_DOT        shift, and go to state 39
+    S_PLUS       shift, and go to state 40
+    S_MINUS      shift, and go to state 41
+    S_DIV        shift, and go to state 42
+    S_MOD        shift, and go to state 43
+    S_MUL        shift, and go to state 44
+    S_POW        shift, and go to state 45
+    S_EQ         shift, and go to state 46
+    S_NEQ        shift, and go to state 47
+    S_LE         shift, and go to state 48
+    S_GE         shift, and go to state 49
+    S_LT         shift, and go to state 50
+    S_GT         shift, and go to state 51
+    S_AND        shift, and go to state 52
+    S_OR         shift, and go to state 53
+
+
+State 55
+
+   36 expr: IDENTIFIER S_OBRACE args • S_CBRACE
+
+    S_CBRACE  shift, and go to state 82
+
+
+State 56
+
+   30 args: expr •
+   31     | expr • S_COMMA args
+   37 expr: expr • S_DOT IDENTIFIER S_OBRACE args S_CBRACE
+   38     | expr • S_PLUS expr
+   39     | expr • S_MINUS expr
+   40     | expr • S_DIV expr
+   41     | expr • S_MUL expr
+   42     | expr • S_MOD expr
+   43     | expr • S_POW expr
+   45     | expr • S_EQ expr
+   46     | expr • S_NEQ expr
+   47     | expr • S_LE expr
+   48     | expr • S_GE expr
+   49     | expr • S_LT expr
+   50     | expr • S_GT expr
+   51     | expr • S_AND expr
+   52     | expr • S_OR expr
+
+    S_COMMA  shift, and go to state 83
+    S_DOT    shift, and go to state 39
+    S_PLUS   shift, and go to state 40
+    S_MINUS  shift, and go to state 41
+    S_DIV    shift, and go to state 42
+    S_MOD    shift, and go to state 43
+    S_MUL    shift, and go to state 44
+    S_POW    shift, and go to state 45
+    S_EQ     shift, and go to state 46
+    S_NEQ    shift, and go to state 47
+    S_LE     shift, and go to state 48
+    S_GE     shift, and go to state 49
+    S_LT     shift, and go to state 50
+    S_GT     shift, and go to state 51
+    S_AND    shift, and go to state 52
+    S_OR     shift, and go to state 53
+
+    $default  reduce using rule 30 (args)
+
+
+State 57
+
+   17 class: S_CLASS IDENTIFIER S_LBRACE • class_body S_RBRACE
+
+    S_FUNC  shift, and go to state 6
+    S_VAR   shift, and go to state 7
+
+    $default  reduce using rule 18 (class_body)
+
+    declaration    go to state 84
+    class_body     go to state 85
+    class_members  go to state 86
+    class_member   go to state 87
+    function       go to state 88
+
+
+State 58
+
+   24 function: S_FUNC IDENTIFIER S_OBRACE • params S_CBRACE S_ARROW IDENTIFIER S_LBRACE statements S_RBRACE
+   25         | S_FUNC IDENTIFIER S_OBRACE • params S_CBRACE S_LBRACE statements S_RBRACE
+
+    IDENTIFIER  shift, and go to state 89
+
+    $default  reduce using rule 26 (params)
+
+    params  go to state 90
+
+
+State 59
+
+   14 declaration: S_VAR IDENTIFIER S_COLON • IDENTIFIER S_EQUALS expr
+   16            | S_VAR IDENTIFIER S_COLON • IDENTIFIER
+
+    IDENTIFIER  shift, and go to state 91
+
+
+State 60
+
+   15 declaration: S_VAR IDENTIFIER S_EQUALS • expr
+
+    NUMBER      shift, and go to state 1
+    FLOAT       shift, and go to state 2
+    IDENTIFIER  shift, and go to state 28
+    STRING      shift, and go to state 4
+    S_NEW       shift, and go to state 8
+    S_MINUS     shift, and go to state 12
+    S_NOT       shift, and go to state 13
+    S_OBRACE    shift, and go to state 14
+
+    expr  go to state 92
+
+
+State 61
+
+   55 expr: S_NEW IDENTIFIER S_OBRACE • args S_CBRACE
+
+    NUMBER      shift, and go to state 1
+    FLOAT       shift, and go to state 2
+    IDENTIFIER  shift, and go to state 28
+    STRING      shift, and go to state 4
+    S_NEW       shift, and go to state 8
+    S_MINUS     shift, and go to state 12
+    S_NOT       shift, and go to state 13
+    S_OBRACE    shift, and go to state 14
+
+    $default  reduce using rule 29 (args)
+
+    args  go to state 93
+    expr  go to state 56
+
+
+State 62
+
+   11 statement: S_RETURN expr S_SEMICOLON •
+
+    $default  reduce using rule 11 (statement)
+
+
+State 63
+
+    8 statement: S_IF S_OBRACE expr • S_CBRACE S_LBRACE statements S_RBRACE
+    9          | S_IF S_OBRACE expr • S_CBRACE S_LBRACE statements S_RBRACE S_ELSE S_LBRACE statements S_RBRACE
+   37 expr: expr • S_DOT IDENTIFIER S_OBRACE args S_CBRACE
+   38     | expr • S_PLUS expr
+   39     | expr • S_MINUS expr
+   40     | expr • S_DIV expr
+   41     | expr • S_MUL expr
+   42     | expr • S_MOD expr
+   43     | expr • S_POW expr
+   45     | expr • S_EQ expr
+   46     | expr • S_NEQ expr
+   47     | expr • S_LE expr
+   48     | expr • S_GE expr
+   49     | expr • S_LT expr
+   50     | expr • S_GT expr
+   51     | expr • S_AND expr
+   52     | expr • S_OR expr
+
+    S_DOT     shift, and go to state 39
+    S_PLUS    shift, and go to state 40
+    S_MINUS   shift, and go to state 41
+    S_DIV     shift, and go to state 42
+    S_MOD     shift, and go to state 43
+    S_MUL     shift, and go to state 44
+    S_POW     shift, and go to state 45
+    S_EQ      shift, and go to state 46
+    S_NEQ     shift, and go to state 47
+    S_LE      shift, and go to state 48
+    S_GE      shift, and go to state 49
+    S_LT      shift, and go to state 50
+    S_GT      shift, and go to state 51
+    S_AND     shift, and go to state 52
+    S_OR      shift, and go to state 53
+    S_CBRACE  shift, and go to state 94
+
+
+State 64
+
+   10 statement: S_WHILE S_OBRACE expr • S_CBRACE S_LBRACE statements S_RBRACE
+   37 expr: expr • S_DOT IDENTIFIER S_OBRACE args S_CBRACE
+   38     | expr • S_PLUS expr
+   39     | expr • S_MINUS expr
+   40     | expr • S_DIV expr
+   41     | expr • S_MUL expr
+   42     | expr • S_MOD expr
+   43     | expr • S_POW expr
+   45     | expr • S_EQ expr
+   46     | expr • S_NEQ expr
+   47     | expr • S_LE expr
+   48     | expr • S_GE expr
+   49     | expr • S_LT expr
+   50     | expr • S_GT expr
+   51     | expr • S_AND expr
+   52     | expr • S_OR expr
+
+    S_DOT     shift, and go to state 39
+    S_PLUS    shift, and go to state 40
+    S_MINUS   shift, and go to state 41
+    S_DIV     shift, and go to state 42
+    S_MOD     shift, and go to state 43
+    S_MUL     shift, and go to state 44
+    S_POW     shift, and go to state 45
+    S_EQ      shift, and go to state 46
+    S_NEQ     shift, and go to state 47
+    S_LE      shift, and go to state 48
+    S_GE      shift, and go to state 49
+    S_LT      shift, and go to state 50
+    S_GT      shift, and go to state 51
+    S_AND     shift, and go to state 52
+    S_OR      shift, and go to state 53
+    S_CBRACE  shift, and go to state 95
+
+
+State 65
+
+   54 expr: S_OBRACE expr S_CBRACE •
+
+    $default  reduce using rule 54 (expr)
+
+
+State 66
+
+   37 expr: expr S_DOT IDENTIFIER • S_OBRACE args S_CBRACE
+
+    S_OBRACE  shift, and go to state 96
+
+
+State 67
+
+   37 expr: expr • S_DOT IDENTIFIER S_OBRACE args S_CBRACE
+   38     | expr • S_PLUS expr
+   38     | expr S_PLUS expr •
+   39     | expr • S_MINUS expr
+   40     | expr • S_DIV expr
+   41     | expr • S_MUL expr
+   42     | expr • S_MOD expr
+   43     | expr • S_POW expr
+   45     | expr • S_EQ expr
+   46     | expr • S_NEQ expr
+   47     | expr • S_LE expr
+   48     | expr • S_GE expr
+   49     | expr • S_LT expr
+   50     | expr • S_GT expr
+   51     | expr • S_AND expr
+   52     | expr • S_OR expr
+
+    S_DOT  shift, and go to state 39
+    S_DIV  shift, and go to state 42
+    S_MOD  shift, and go to state 43
+    S_MUL  shift, and go to state 44
+    S_POW  shift, and go to state 45
+
+    $default  reduce using rule 38 (expr)
+
+
+State 68
+
+   37 expr: expr • S_DOT IDENTIFIER S_OBRACE args S_CBRACE
+   38     | expr • S_PLUS expr
+   39     | expr • S_MINUS expr
+   39     | expr S_MINUS expr •
+   40     | expr • S_DIV expr
+   41     | expr • S_MUL expr
+   42     | expr • S_MOD expr
+   43     | expr • S_POW expr
+   45     | expr • S_EQ expr
+   46     | expr • S_NEQ expr
+   47     | expr • S_LE expr
+   48     | expr • S_GE expr
+   49     | expr • S_LT expr
+   50     | expr • S_GT expr
+   51     | expr • S_AND expr
+   52     | expr • S_OR expr
+
+    S_DOT  shift, and go to state 39
+    S_DIV  shift, and go to state 42
+    S_MOD  shift, and go to state 43
+    S_MUL  shift, and go to state 44
+    S_POW  shift, and go to state 45
+
+    $default  reduce using rule 39 (expr)
+
+
+State 69
+
+   37 expr: expr • S_DOT IDENTIFIER S_OBRACE args S_CBRACE
+   38     | expr • S_PLUS expr
+   39     | expr • S_MINUS expr
+   40     | expr • S_DIV expr
+   40     | expr S_DIV expr •
+   41     | expr • S_MUL expr
+   42     | expr • S_MOD expr
+   43     | expr • S_POW expr
+   45     | expr • S_EQ expr
+   46     | expr • S_NEQ expr
+   47     | expr • S_LE expr
+   48     | expr • S_GE expr
+   49     | expr • S_LT expr
+   50     | expr • S_GT expr
+   51     | expr • S_AND expr
+   52     | expr • S_OR expr
+
+    S_DOT  shift, and go to state 39
+    S_POW  shift, and go to state 45
+
+    $default  reduce using rule 40 (expr)
+
+
+State 70
+
+   37 expr: expr • S_DOT IDENTIFIER S_OBRACE args S_CBRACE
+   38     | expr • S_PLUS expr
+   39     | expr • S_MINUS expr
+   40     | expr • S_DIV expr
+   41     | expr • S_MUL expr
+   42     | expr • S_MOD expr
+   42     | expr S_MOD expr •
+   43     | expr • S_POW expr
+   45     | expr • S_EQ expr
+   46     | expr • S_NEQ expr
+   47     | expr • S_LE expr
+   48     | expr • S_GE expr
+   49     | expr • S_LT expr
+   50     | expr • S_GT expr
+   51     | expr • S_AND expr
+   52     | expr • S_OR expr
+
+    S_DOT  shift, and go to state 39
+    S_POW  shift, and go to state 45
+
+    $default  reduce using rule 42 (expr)
+
+
+State 71
+
+   37 expr: expr • S_DOT IDENTIFIER S_OBRACE args S_CBRACE
+   38     | expr • S_PLUS expr
+   39     | expr • S_MINUS expr
+   40     | expr • S_DIV expr
+   41     | expr • S_MUL expr
+   41     | expr S_MUL expr •
+   42     | expr • S_MOD expr
+   43     | expr • S_POW expr
+   45     | expr • S_EQ expr
+   46     | expr • S_NEQ expr
+   47     | expr • S_LE expr
+   48     | expr • S_GE expr
+   49     | expr • S_LT expr
+   50     | expr • S_GT expr
+   51     | expr • S_AND expr
+   52     | expr • S_OR expr
+
+    S_DOT  shift, and go to state 39
+    S_POW  shift, and go to state 45
+
+    $default  reduce using rule 41 (expr)
+
+
+State 72
+
+   37 expr: expr • S_DOT IDENTIFIER S_OBRACE args S_CBRACE
+   38     | expr • S_PLUS expr
+   39     | expr • S_MINUS expr
+   40     | expr • S_DIV expr
+   41     | expr • S_MUL expr
+   42     | expr • S_MOD expr
+   43     | expr • S_POW expr
+   43     | expr S_POW expr •
+   45     | expr • S_EQ expr
+   46     | expr • S_NEQ expr
+   47     | expr • S_LE expr
+   48     | expr • S_GE expr
+   49     | expr • S_LT expr
+   50     | expr • S_GT expr
+   51     | expr • S_AND expr
+   52     | expr • S_OR expr
+
+    S_DOT  shift, and go to state 39
+    S_POW  shift, and go to state 45
+
+    $default  reduce using rule 43 (expr)
+
+
+State 73
+
+   37 expr: expr • S_DOT IDENTIFIER S_OBRACE args S_CBRACE
+   38     | expr • S_PLUS expr
+   39     | expr • S_MINUS expr
+   40     | expr • S_DIV expr
+   41     | expr • S_MUL expr
+   42     | expr • S_MOD expr
+   43     | expr • S_POW expr
+   45     | expr • S_EQ expr
+   45     | expr S_EQ expr •
+   46     | expr • S_NEQ expr
+   47     | expr • S_LE expr
+   48     | expr • S_GE expr
+   49     | expr • S_LT expr
+   50     | expr • S_GT expr
+   51     | expr • S_AND expr
+   52     | expr • S_OR expr
+
+    S_DOT    shift, and go to state 39
+    S_PLUS   shift, and go to state 40
+    S_MINUS  shift, and go to state 41
+    S_DIV    shift, and go to state 42
+    S_MOD    shift, and go to state 43
+    S_MUL    shift, and go to state 44
+    S_POW    shift, and go to state 45
+    S_LE     shift, and go to state 48
+    S_GE     shift, and go to state 49
+    S_LT     shift, and go to state 50
+    S_GT     shift, and go to state 51
+
+    $default  reduce using rule 45 (expr)
+
+
+State 74
+
+   37 expr: expr • S_DOT IDENTIFIER S_OBRACE args S_CBRACE
+   38     | expr • S_PLUS expr
+   39     | expr • S_MINUS expr
+   40     | expr • S_DIV expr
+   41     | expr • S_MUL expr
+   42     | expr • S_MOD expr
+   43     | expr • S_POW expr
+   45     | expr • S_EQ expr
+   46     | expr • S_NEQ expr
+   46     | expr S_NEQ expr •
+   47     | expr • S_LE expr
+   48     | expr • S_GE expr
+   49     | expr • S_LT expr
+   50     | expr • S_GT expr
+   51     | expr • S_AND expr
+   52     | expr • S_OR expr
+
+    S_DOT    shift, and go to state 39
+    S_PLUS   shift, and go to state 40
+    S_MINUS  shift, and go to state 41
+    S_DIV    shift, and go to state 42
+    S_MOD    shift, and go to state 43
+    S_MUL    shift, and go to state 44
+    S_POW    shift, and go to state 45
+    S_LE     shift, and go to state 48
+    S_GE     shift, and go to state 49
+    S_LT     shift, and go to state 50
+    S_GT     shift, and go to state 51
+
+    $default  reduce using rule 46 (expr)
+
+
+State 75
+
+   37 expr: expr • S_DOT IDENTIFIER S_OBRACE args S_CBRACE
+   38     | expr • S_PLUS expr
+   39     | expr • S_MINUS expr
+   40     | expr • S_DIV expr
+   41     | expr • S_MUL expr
+   42     | expr • S_MOD expr
+   43     | expr • S_POW expr
+   45     | expr • S_EQ expr
+   46     | expr • S_NEQ expr
+   47     | expr • S_LE expr
+   47     | expr S_LE expr •
+   48     | expr • S_GE expr
+   49     | expr • S_LT expr
+   50     | expr • S_GT expr
+   51     | expr • S_AND expr
+   52     | expr • S_OR expr
+
+    S_DOT    shift, and go to state 39
+    S_PLUS   shift, and go to state 40
+    S_MINUS  shift, and go to state 41
+    S_DIV    shift, and go to state 42
+    S_MOD    shift, and go to state 43
+    S_MUL    shift, and go to state 44
+    S_POW    shift, and go to state 45
+
+    $default  reduce using rule 47 (expr)
+
+
+State 76
+
+   37 expr: expr • S_DOT IDENTIFIER S_OBRACE args S_CBRACE
+   38     | expr • S_PLUS expr
+   39     | expr • S_MINUS expr
+   40     | expr • S_DIV expr
+   41     | expr • S_MUL expr
+   42     | expr • S_MOD expr
+   43     | expr • S_POW expr
+   45     | expr • S_EQ expr
+   46     | expr • S_NEQ expr
+   47     | expr • S_LE expr
+   48     | expr • S_GE expr
+   48     | expr S_GE expr •
+   49     | expr • S_LT expr
+   50     | expr • S_GT expr
+   51     | expr • S_AND expr
+   52     | expr • S_OR expr
+
+    S_DOT    shift, and go to state 39
+    S_PLUS   shift, and go to state 40
+    S_MINUS  shift, and go to state 41
+    S_DIV    shift, and go to state 42
+    S_MOD    shift, and go to state 43
+    S_MUL    shift, and go to state 44
+    S_POW    shift, and go to state 45
+
+    $default  reduce using rule 48 (expr)
+
+
+State 77
+
+   37 expr: expr • S_DOT IDENTIFIER S_OBRACE args S_CBRACE
+   38     | expr • S_PLUS expr
+   39     | expr • S_MINUS expr
+   40     | expr • S_DIV expr
+   41     | expr • S_MUL expr
+   42     | expr • S_MOD expr
+   43     | expr • S_POW expr
+   45     | expr • S_EQ expr
+   46     | expr • S_NEQ expr
+   47     | expr • S_LE expr
+   48     | expr • S_GE expr
+   49     | expr • S_LT expr
+   49     | expr S_LT expr •
+   50     | expr • S_GT expr
+   51     | expr • S_AND expr
+   52     | expr • S_OR expr
+
+    S_DOT    shift, and go to state 39
+    S_PLUS   shift, and go to state 40
+    S_MINUS  shift, and go to state 41
+    S_DIV    shift, and go to state 42
+    S_MOD    shift, and go to state 43
+    S_MUL    shift, and go to state 44
+    S_POW    shift, and go to state 45
+
+    $default  reduce using rule 49 (expr)
+
+
+State 78
+
+   37 expr: expr • S_DOT IDENTIFIER S_OBRACE args S_CBRACE
+   38     | expr • S_PLUS expr
+   39     | expr • S_MINUS expr
+   40     | expr • S_DIV expr
+   41     | expr • S_MUL expr
+   42     | expr • S_MOD expr
+   43     | expr • S_POW expr
+   45     | expr • S_EQ expr
+   46     | expr • S_NEQ expr
+   47     | expr • S_LE expr
+   48     | expr • S_GE expr
+   49     | expr • S_LT expr
+   50     | expr • S_GT expr
+   50     | expr S_GT expr •
+   51     | expr • S_AND expr
+   52     | expr • S_OR expr
+
+    S_DOT    shift, and go to state 39
+    S_PLUS   shift, and go to state 40
+    S_MINUS  shift, and go to state 41
+    S_DIV    shift, and go to state 42
+    S_MOD    shift, and go to state 43
+    S_MUL    shift, and go to state 44
+    S_POW    shift, and go to state 45
+
+    $default  reduce using rule 50 (expr)
+
+
+State 79
+
+   37 expr: expr • S_DOT IDENTIFIER S_OBRACE args S_CBRACE
+   38     | expr • S_PLUS expr
+   39     | expr • S_MINUS expr
+   40     | expr • S_DIV expr
+   41     | expr • S_MUL expr
+   42     | expr • S_MOD expr
+   43     | expr • S_POW expr
+   45     | expr • S_EQ expr
+   46     | expr • S_NEQ expr
+   47     | expr • S_LE expr
+   48     | expr • S_GE expr
+   49     | expr • S_LT expr
+   50     | expr • S_GT expr
+   51     | expr • S_AND expr
+   51     | expr S_AND expr •
+   52     | expr • S_OR expr
+
+    S_DOT    shift, and go to state 39
+    S_PLUS   shift, and go to state 40
+    S_MINUS  shift, and go to state 41
+    S_DIV    shift, and go to state 42
+    S_MOD    shift, and go to state 43
+    S_MUL    shift, and go to state 44
+    S_POW    shift, and go to state 45
+    S_EQ     shift, and go to state 46
+    S_NEQ    shift, and go to state 47
+    S_LE     shift, and go to state 48
+    S_GE     shift, and go to state 49
+    S_LT     shift, and go to state 50
+    S_GT     shift, and go to state 51
+
+    $default  reduce using rule 51 (expr)
+
+
+State 80
+
+   37 expr: expr • S_DOT IDENTIFIER S_OBRACE args S_CBRACE
+   38     | expr • S_PLUS expr
+   39     | expr • S_MINUS expr
+   40     | expr • S_DIV expr
+   41     | expr • S_MUL expr
+   42     | expr • S_MOD expr
+   43     | expr • S_POW expr
+   45     | expr • S_EQ expr
+   46     | expr • S_NEQ expr
+   47     | expr • S_LE expr
+   48     | expr • S_GE expr
+   49     | expr • S_LT expr
+   50     | expr • S_GT expr
+   51     | expr • S_AND expr
+   52     | expr • S_OR expr
+   52     | expr S_OR expr •
+
+    S_DOT    shift, and go to state 39
+    S_PLUS   shift, and go to state 40
+    S_MINUS  shift, and go to state 41
+    S_DIV    shift, and go to state 42
+    S_MOD    shift, and go to state 43
+    S_MUL    shift, and go to state 44
+    S_POW    shift, and go to state 45
+    S_EQ     shift, and go to state 46
+    S_NEQ    shift, and go to state 47
+    S_LE     shift, and go to state 48
+    S_GE     shift, and go to state 49
+    S_LT     shift, and go to state 50
+    S_GT     shift, and go to state 51
+    S_AND    shift, and go to state 52
+
+    $default  reduce using rule 52 (expr)
+
+
+State 81
+
+    7 statement: IDENTIFIER S_EQUALS expr S_SEMICOLON •
+
+    $default  reduce using rule 7 (statement)
+
+
+State 82
+
+   36 expr: IDENTIFIER S_OBRACE args S_CBRACE •
+
+    $default  reduce using rule 36 (expr)
+
+
+State 83
+
+   31 args: expr S_COMMA • args
+
+    NUMBER      shift, and go to state 1
+    FLOAT       shift, and go to state 2
+    IDENTIFIER  shift, and go to state 28
+    STRING      shift, and go to state 4
+    S_NEW       shift, and go to state 8
+    S_MINUS     shift, and go to state 12
+    S_NOT       shift, and go to state 13
+    S_OBRACE    shift, and go to state 14
+
+    $default  reduce using rule 29 (args)
+
+    args  go to state 97
+    expr  go to state 56
+
+
+State 84
+
+   22 class_member: declaration • S_SEMICOLON
+
+    S_SEMICOLON  shift, and go to state 98
+
+
+State 85
+
+   17 class: S_CLASS IDENTIFIER S_LBRACE class_body • S_RBRACE
+
+    S_RBRACE  shift, and go to state 99
+
+
+State 86
+
+   19 class_body: class_members •
+
+    $default  reduce using rule 19 (class_body)
+
+
+State 87
+
+   20 class_members: class_member •
+   21              | class_member • class_members
+
+    S_FUNC  shift, and go to state 6
+    S_VAR   shift, and go to state 7
+
+    $default  reduce using rule 20 (class_members)
+
+    declaration    go to state 84
+    class_members  go to state 100
+    class_member   go to state 87
+    function       go to state 88
+
+
+State 88
+
+   23 class_member: function •
+
+    $default  reduce using rule 23 (class_member)
+
+
+State 89
+
+   27 params: IDENTIFIER • S_COLON IDENTIFIER
+   28       | IDENTIFIER • S_COLON IDENTIFIER S_COMMA params
+
+    S_COLON  shift, and go to state 101
+
+
+State 90
+
+   24 function: S_FUNC IDENTIFIER S_OBRACE params • S_CBRACE S_ARROW IDENTIFIER S_LBRACE statements S_RBRACE
+   25         | S_FUNC IDENTIFIER S_OBRACE params • S_CBRACE S_LBRACE statements S_RBRACE
+
+    S_CBRACE  shift, and go to state 102
+
+
+State 91
+
+   14 declaration: S_VAR IDENTIFIER S_COLON IDENTIFIER • S_EQUALS expr
+   16            | S_VAR IDENTIFIER S_COLON IDENTIFIER •
+
+    S_EQUALS  shift, and go to state 103
+
+    $default  reduce using rule 16 (declaration)
+
+
+State 92
+
+   15 declaration: S_VAR IDENTIFIER S_EQUALS expr •
+   37 expr: expr • S_DOT IDENTIFIER S_OBRACE args S_CBRACE
+   38     | expr • S_PLUS expr
+   39     | expr • S_MINUS expr
+   40     | expr • S_DIV expr
+   41     | expr • S_MUL expr
+   42     | expr • S_MOD expr
+   43     | expr • S_POW expr
+   45     | expr • S_EQ expr
+   46     | expr • S_NEQ expr
+   47     | expr • S_LE expr
+   48     | expr • S_GE expr
+   49     | expr • S_LT expr
+   50     | expr • S_GT expr
+   51     | expr • S_AND expr
+   52     | expr • S_OR expr
+
+    S_DOT    shift, and go to state 39
+    S_PLUS   shift, and go to state 40
+    S_MINUS  shift, and go to state 41
+    S_DIV    shift, and go to state 42
+    S_MOD    shift, and go to state 43
+    S_MUL    shift, and go to state 44
+    S_POW    shift, and go to state 45
+    S_EQ     shift, and go to state 46
+    S_NEQ    shift, and go to state 47
+    S_LE     shift, and go to state 48
+    S_GE     shift, and go to state 49
+    S_LT     shift, and go to state 50
+    S_GT     shift, and go to state 51
+    S_AND    shift, and go to state 52
+    S_OR     shift, and go to state 53
+
+    $default  reduce using rule 15 (declaration)
+
+
+State 93
+
+   55 expr: S_NEW IDENTIFIER S_OBRACE args • S_CBRACE
+
+    S_CBRACE  shift, and go to state 104
+
+
+State 94
+
+    8 statement: S_IF S_OBRACE expr S_CBRACE • S_LBRACE statements S_RBRACE
+    9          | S_IF S_OBRACE expr S_CBRACE • S_LBRACE statements S_RBRACE S_ELSE S_LBRACE statements S_RBRACE
+
+    S_LBRACE  shift, and go to state 105
+
+
+State 95
+
+   10 statement: S_WHILE S_OBRACE expr S_CBRACE • S_LBRACE statements S_RBRACE
+
+    S_LBRACE  shift, and go to state 106
+
+
+State 96
+
+   37 expr: expr S_DOT IDENTIFIER S_OBRACE • args S_CBRACE
+
+    NUMBER      shift, and go to state 1
+    FLOAT       shift, and go to state 2
+    IDENTIFIER  shift, and go to state 28
+    STRING      shift, and go to state 4
+    S_NEW       shift, and go to state 8
+    S_MINUS     shift, and go to state 12
+    S_NOT       shift, and go to state 13
+    S_OBRACE    shift, and go to state 14
+
+    $default  reduce using rule 29 (args)
+
+    args  go to state 107
+    expr  go to state 56
+
+
+State 97
+
+   31 args: expr S_COMMA args •
+
+    $default  reduce using rule 31 (args)
+
+
+State 98
+
+   22 class_member: declaration S_SEMICOLON •
+
+    $default  reduce using rule 22 (class_member)
+
+
+State 99
+
+   17 class: S_CLASS IDENTIFIER S_LBRACE class_body S_RBRACE •
+
+    $default  reduce using rule 17 (class)
+
+
+State 100
+
+   21 class_members: class_member class_members •
+
+    $default  reduce using rule 21 (class_members)
+
+
+State 101
+
+   27 params: IDENTIFIER S_COLON • IDENTIFIER
+   28       | IDENTIFIER S_COLON • IDENTIFIER S_COMMA params
+
+    IDENTIFIER  shift, and go to state 108
+
+
+State 102
+
+   24 function: S_FUNC IDENTIFIER S_OBRACE params S_CBRACE • S_ARROW IDENTIFIER S_LBRACE statements S_RBRACE
+   25         | S_FUNC IDENTIFIER S_OBRACE params S_CBRACE • S_LBRACE statements S_RBRACE
+
+    S_ARROW   shift, and go to state 109
+    S_LBRACE  shift, and go to state 110
+
+
+State 103
+
+   14 declaration: S_VAR IDENTIFIER S_COLON IDENTIFIER S_EQUALS • expr
+
+    NUMBER      shift, and go to state 1
+    FLOAT       shift, and go to state 2
+    IDENTIFIER  shift, and go to state 28
+    STRING      shift, and go to state 4
+    S_NEW       shift, and go to state 8
+    S_MINUS     shift, and go to state 12
+    S_NOT       shift, and go to state 13
+    S_OBRACE    shift, and go to state 14
+
+    expr  go to state 111
+
+
+State 104
+
+   55 expr: S_NEW IDENTIFIER S_OBRACE args S_CBRACE •
+
+    $default  reduce using rule 55 (expr)
+
+
+State 105
+
+    8 statement: S_IF S_OBRACE expr S_CBRACE S_LBRACE • statements S_RBRACE
+    9          | S_IF S_OBRACE expr S_CBRACE S_LBRACE • statements S_RBRACE S_ELSE S_LBRACE statements S_RBRACE
+
+    NUMBER      shift, and go to state 1
+    FLOAT       shift, and go to state 2
+    IDENTIFIER  shift, and go to state 3
+    STRING      shift, and go to state 4
+    S_CLASS     shift, and go to state 5
+    S_FUNC      shift, and go to state 6
+    S_VAR       shift, and go to state 7
+    S_NEW       shift, and go to state 8
+    S_RETURN    shift, and go to state 9
+    S_IF        shift, and go to state 10
+    S_WHILE     shift, and go to state 11
+    S_MINUS     shift, and go to state 12
+    S_NOT       shift, and go to state 13
+    S_OBRACE    shift, and go to state 14
+
+    statements   go to state 112
+    statement    go to state 17
+    declaration  go to state 18
+    class        go to state 19
+    function     go to state 20
+    expr         go to state 21
+
+
+State 106
+
+   10 statement: S_WHILE S_OBRACE expr S_CBRACE S_LBRACE • statements S_RBRACE
+
+    NUMBER      shift, and go to state 1
+    FLOAT       shift, and go to state 2
+    IDENTIFIER  shift, and go to state 3
+    STRING      shift, and go to state 4
+    S_CLASS     shift, and go to state 5
+    S_FUNC      shift, and go to state 6
+    S_VAR       shift, and go to state 7
+    S_NEW       shift, and go to state 8
+    S_RETURN    shift, and go to state 9
+    S_IF        shift, and go to state 10
+    S_WHILE     shift, and go to state 11
+    S_MINUS     shift, and go to state 12
+    S_NOT       shift, and go to state 13
+    S_OBRACE    shift, and go to state 14
+
+    statements   go to state 113
+    statement    go to state 17
+    declaration  go to state 18
+    class        go to state 19
+    function     go to state 20
+    expr         go to state 21
+
+
+State 107
+
+   37 expr: expr S_DOT IDENTIFIER S_OBRACE args • S_CBRACE
+
+    S_CBRACE  shift, and go to state 114
+
+
+State 108
+
+   27 params: IDENTIFIER S_COLON IDENTIFIER •
+   28       | IDENTIFIER S_COLON IDENTIFIER • S_COMMA params
+
+    S_COMMA  shift, and go to state 115
+
+    $default  reduce using rule 27 (params)
+
+
+State 109
+
+   24 function: S_FUNC IDENTIFIER S_OBRACE params S_CBRACE S_ARROW • IDENTIFIER S_LBRACE statements S_RBRACE
+
+    IDENTIFIER  shift, and go to state 116
+
+
+State 110
+
+   25 function: S_FUNC IDENTIFIER S_OBRACE params S_CBRACE S_LBRACE • statements S_RBRACE
+
+    NUMBER      shift, and go to state 1
+    FLOAT       shift, and go to state 2
+    IDENTIFIER  shift, and go to state 3
+    STRING      shift, and go to state 4
+    S_CLASS     shift, and go to state 5
+    S_FUNC      shift, and go to state 6
+    S_VAR       shift, and go to state 7
+    S_NEW       shift, and go to state 8
+    S_RETURN    shift, and go to state 9
+    S_IF        shift, and go to state 10
+    S_WHILE     shift, and go to state 11
+    S_MINUS     shift, and go to state 12
+    S_NOT       shift, and go to state 13
+    S_OBRACE    shift, and go to state 14
+
+    statements   go to state 117
+    statement    go to state 17
+    declaration  go to state 18
+    class        go to state 19
+    function     go to state 20
+    expr         go to state 21
+
+
+State 111
+
+   14 declaration: S_VAR IDENTIFIER S_COLON IDENTIFIER S_EQUALS expr •
+   37 expr: expr • S_DOT IDENTIFIER S_OBRACE args S_CBRACE
+   38     | expr • S_PLUS expr
+   39     | expr • S_MINUS expr
+   40     | expr • S_DIV expr
+   41     | expr • S_MUL expr
+   42     | expr • S_MOD expr
+   43     | expr • S_POW expr
+   45     | expr • S_EQ expr
+   46     | expr • S_NEQ expr
+   47     | expr • S_LE expr
+   48     | expr • S_GE expr
+   49     | expr • S_LT expr
+   50     | expr • S_GT expr
+   51     | expr • S_AND expr
+   52     | expr • S_OR expr
+
+    S_DOT    shift, and go to state 39
+    S_PLUS   shift, and go to state 40
+    S_MINUS  shift, and go to state 41
+    S_DIV    shift, and go to state 42
+    S_MOD    shift, and go to state 43
+    S_MUL    shift, and go to state 44
+    S_POW    shift, and go to state 45
+    S_EQ     shift, and go to state 46
+    S_NEQ    shift, and go to state 47
+    S_LE     shift, and go to state 48
+    S_GE     shift, and go to state 49
+    S_LT     shift, and go to state 50
+    S_GT     shift, and go to state 51
+    S_AND    shift, and go to state 52
+    S_OR     shift, and go to state 53
+
+    $default  reduce using rule 14 (declaration)
+
+
+State 112
+
+    8 statement: S_IF S_OBRACE expr S_CBRACE S_LBRACE statements • S_RBRACE
+    9          | S_IF S_OBRACE expr S_CBRACE S_LBRACE statements • S_RBRACE S_ELSE S_LBRACE statements S_RBRACE
+
+    S_RBRACE  shift, and go to state 118
+
+
+State 113
+
+   10 statement: S_WHILE S_OBRACE expr S_CBRACE S_LBRACE statements • S_RBRACE
+
+    S_RBRACE  shift, and go to state 119
+
+
+State 114
+
+   37 expr: expr S_DOT IDENTIFIER S_OBRACE args S_CBRACE •
+
+    $default  reduce using rule 37 (expr)
+
+
+State 115
+
+   28 params: IDENTIFIER S_COLON IDENTIFIER S_COMMA • params
+
+    IDENTIFIER  shift, and go to state 89
+
+    $default  reduce using rule 26 (params)
+
+    params  go to state 120
+
+
+State 116
+
+   24 function: S_FUNC IDENTIFIER S_OBRACE params S_CBRACE S_ARROW IDENTIFIER • S_LBRACE statements S_RBRACE
+
+    S_LBRACE  shift, and go to state 121
+
+
+State 117
+
+   25 function: S_FUNC IDENTIFIER S_OBRACE params S_CBRACE S_LBRACE statements • S_RBRACE
+
+    S_RBRACE  shift, and go to state 122
+
+
+State 118
+
+    8 statement: S_IF S_OBRACE expr S_CBRACE S_LBRACE statements S_RBRACE •
+    9          | S_IF S_OBRACE expr S_CBRACE S_LBRACE statements S_RBRACE • S_ELSE S_LBRACE statements S_RBRACE
+
+    S_ELSE  shift, and go to state 123
+
+    $default  reduce using rule 8 (statement)
+
+
+State 119
+
+   10 statement: S_WHILE S_OBRACE expr S_CBRACE S_LBRACE statements S_RBRACE •
+
+    $default  reduce using rule 10 (statement)
+
+
+State 120
+
+   28 params: IDENTIFIER S_COLON IDENTIFIER S_COMMA params •
+
+    $default  reduce using rule 28 (params)
+
+
+State 121
+
+   24 function: S_FUNC IDENTIFIER S_OBRACE params S_CBRACE S_ARROW IDENTIFIER S_LBRACE • statements S_RBRACE
+
+    NUMBER      shift, and go to state 1
+    FLOAT       shift, and go to state 2
+    IDENTIFIER  shift, and go to state 3
+    STRING      shift, and go to state 4
+    S_CLASS     shift, and go to state 5
+    S_FUNC      shift, and go to state 6
+    S_VAR       shift, and go to state 7
+    S_NEW       shift, and go to state 8
+    S_RETURN    shift, and go to state 9
+    S_IF        shift, and go to state 10
+    S_WHILE     shift, and go to state 11
+    S_MINUS     shift, and go to state 12
+    S_NOT       shift, and go to state 13
+    S_OBRACE    shift, and go to state 14
+
+    statements   go to state 124
+    statement    go to state 17
+    declaration  go to state 18
+    class        go to state 19
+    function     go to state 20
+    expr         go to state 21
+
+
+State 122
+
+   25 function: S_FUNC IDENTIFIER S_OBRACE params S_CBRACE S_LBRACE statements S_RBRACE •
+
+    $default  reduce using rule 25 (function)
+
+
+State 123
+
+    9 statement: S_IF S_OBRACE expr S_CBRACE S_LBRACE statements S_RBRACE S_ELSE • S_LBRACE statements S_RBRACE
+
+    S_LBRACE  shift, and go to state 125
+
+
+State 124
+
+   24 function: S_FUNC IDENTIFIER S_OBRACE params S_CBRACE S_ARROW IDENTIFIER S_LBRACE statements • S_RBRACE
+
+    S_RBRACE  shift, and go to state 126
+
+
+State 125
+
+    9 statement: S_IF S_OBRACE expr S_CBRACE S_LBRACE statements S_RBRACE S_ELSE S_LBRACE • statements S_RBRACE
+
+    NUMBER      shift, and go to state 1
+    FLOAT       shift, and go to state 2
+    IDENTIFIER  shift, and go to state 3
+    STRING      shift, and go to state 4
+    S_CLASS     shift, and go to state 5
+    S_FUNC      shift, and go to state 6
+    S_VAR       shift, and go to state 7
+    S_NEW       shift, and go to state 8
+    S_RETURN    shift, and go to state 9
+    S_IF        shift, and go to state 10
+    S_WHILE     shift, and go to state 11
+    S_MINUS     shift, and go to state 12
+    S_NOT       shift, and go to state 13
+    S_OBRACE    shift, and go to state 14
+
+    statements   go to state 127
+    statement    go to state 17
+    declaration  go to state 18
+    class        go to state 19
+    function     go to state 20
+    expr         go to state 21
+
+
+State 126
+
+   24 function: S_FUNC IDENTIFIER S_OBRACE params S_CBRACE S_ARROW IDENTIFIER S_LBRACE statements S_RBRACE •
+
+    $default  reduce using rule 24 (function)
+
+
+State 127
+
+    9 statement: S_IF S_OBRACE expr S_CBRACE S_LBRACE statements S_RBRACE S_ELSE S_LBRACE statements • S_RBRACE
+
+    S_RBRACE  shift, and go to state 128
+
+
+State 128
+
+    9 statement: S_IF S_OBRACE expr S_CBRACE S_LBRACE statements S_RBRACE S_ELSE S_LBRACE statements S_RBRACE •
+
+    $default  reduce using rule 9 (statement)

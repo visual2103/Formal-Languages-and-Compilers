@@ -1,0 +1,10 @@
+{
+    "files.associations": {
+        "__locale": "c",
+        "ios": "c",
+        "decl.h": "c",
+        "var.h": "c",
+        "function.h": "c",
+        "rG.C": "cpp"
+    }
+}

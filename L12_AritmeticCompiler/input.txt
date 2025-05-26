@@ -1,0 +1,49 @@
+func distance(a: Point, b: Point) -> float {
+    var dx: float = a.x - b.x;
+    var dy: float = a.y - b.y;
+    return sqrt(dx*dx + dy*dy);
+}
+
+class Point {
+    var x: float;
+    var y: float;
+
+    func init(x0: float, y0: float) {
+        x = x0;
+        y = y0;
+    }
+
+    func move(dx: float, dy: float) {
+        x = x + dx;
+        y = y + dy;
+    }
+
+    func print() {
+        println("Point at (" + x + ", " + y + ")");
+    }
+}
+
+func main() -> int {
+    var p1: Point = new Point(0.0, 0.0);
+    var p2: Point = new Point(3.0, 4.0);
+
+    var d: float = distance(p1, p2);
+    println("Distance: " + d);
+
+    if (d > 5.0) {
+        println("Far apart");
+    } else {
+        println("Close enough");
+    }
+
+    var steps: int = 0;
+    while (distance(p1, p2) > 1.0) {
+        p1.move(0.5, 0.5);
+        steps = steps + 1;
+    }
+    println("Reached in " + steps + " steps");
+
+    return 0;
+}
+
+main();
