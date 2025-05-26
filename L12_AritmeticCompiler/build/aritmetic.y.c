@@ -83,7 +83,7 @@ extern int yylineno;
 
 AST* ast;
 
-#line 87 "aritmetic.tab.c"
+#line 87 "build/aritmetic.y.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -106,105 +106,7 @@ AST* ast;
 #  endif
 # endif
 
-
-/* Debug traces.  */
-#ifndef YYDEBUG
-# define YYDEBUG 0
-#endif
-#if YYDEBUG
-extern int yydebug;
-#endif
-
-/* Token kinds.  */
-#ifndef YYTOKENTYPE
-# define YYTOKENTYPE
-  enum yytokentype
-  {
-    YYEMPTY = -2,
-    YYEOF = 0,                     /* "end of file"  */
-    YYerror = 256,                 /* error  */
-    YYUNDEF = 257,                 /* "invalid token"  */
-    S_NEWLINE = 258,               /* S_NEWLINE  */
-    NUMBER = 259,                  /* NUMBER  */
-    FLOAT = 260,                   /* FLOAT  */
-    IDENTIFIER = 261,              /* IDENTIFIER  */
-    STRING = 262,                  /* STRING  */
-    S_CLASS = 263,                 /* S_CLASS  */
-    S_FUNC = 264,                  /* S_FUNC  */
-    S_VAR = 265,                   /* S_VAR  */
-    S_NEW = 266,                   /* S_NEW  */
-    S_RETURN = 267,                /* S_RETURN  */
-    S_IF = 268,                    /* S_IF  */
-    S_ELSE = 269,                  /* S_ELSE  */
-    S_WHILE = 270,                 /* S_WHILE  */
-    S_FOR = 271,                   /* S_FOR  */
-    S_ARROW = 272,                 /* S_ARROW  */
-    S_COLON = 273,                 /* S_COLON  */
-    S_SEMICOLON = 274,             /* S_SEMICOLON  */
-    S_COMMA = 275,                 /* S_COMMA  */
-    S_LBRACE = 276,                /* S_LBRACE  */
-    S_RBRACE = 277,                /* S_RBRACE  */
-    S_DOT = 278,                   /* S_DOT  */
-    S_EQUALS = 279,                /* S_EQUALS  */
-    S_PLUS = 280,                  /* S_PLUS  */
-    S_MINUS = 281,                 /* S_MINUS  */
-    S_DIV = 282,                   /* S_DIV  */
-    S_MOD = 283,                   /* S_MOD  */
-    S_MUL = 284,                   /* S_MUL  */
-    S_POW = 285,                   /* S_POW  */
-    S_EQ = 286,                    /* S_EQ  */
-    S_NEQ = 287,                   /* S_NEQ  */
-    S_LE = 288,                    /* S_LE  */
-    S_GE = 289,                    /* S_GE  */
-    S_LT = 290,                    /* S_LT  */
-    S_GT = 291,                    /* S_GT  */
-    S_AND = 292,                   /* S_AND  */
-    S_OR = 293,                    /* S_OR  */
-    S_NOT = 294,                   /* S_NOT  */
-    S_OBRACE = 295,                /* S_OBRACE  */
-    S_CBRACE = 296,                /* S_CBRACE  */
-    S_FLOAT_TYPE = 297,            /* S_FLOAT_TYPE  */
-    S_PRINTLN = 298,               /* S_PRINTLN  */
-    S_SQRT = 299,                  /* S_SQRT  */
-    UMINUS = 300                   /* UMINUS  */
-  };
-  typedef enum yytokentype yytoken_kind_t;
-#endif
-
-/* Value type.  */
-#if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-union YYSTYPE
-{
-#line 17 "aritmetic.y"
-
-    int integer;
-    float floatVal ; 
-    char* strVal ; 
-    ExpressionNode* expressionNode;
-    DeclarationNode* declarationNode;
-    StatementNode* statementNode;
-    FunctionNode* functionNode;
-    ClassNode* classNode;
-    VariableNode* variableNode; 
-    ParamNode* paramNode;
-    ArgNode* argNode;          
-
-#line 193 "aritmetic.tab.c"
-
-};
-typedef union YYSTYPE YYSTYPE;
-# define YYSTYPE_IS_TRIVIAL 1
-# define YYSTYPE_IS_DECLARED 1
-#endif
-
-
-extern YYSTYPE yylval;
-
-
-int yyparse (void);
-
-
-
+#include "aritmetic.y.h"
 /* Symbol kind.  */
 enum yysymbol_kind_t
 {
@@ -257,18 +159,20 @@ enum yysymbol_kind_t
   YYSYMBOL_UMINUS = 45,                    /* UMINUS  */
   YYSYMBOL_YYACCEPT = 46,                  /* $accept  */
   YYSYMBOL_file_content = 47,              /* file_content  */
-  YYSYMBOL_statements = 48,                /* statements  */
-  YYSYMBOL_statement = 49,                 /* statement  */
-  YYSYMBOL_declaration = 50,               /* declaration  */
-  YYSYMBOL_type = 51,                      /* type  */
-  YYSYMBOL_class = 52,                     /* class  */
-  YYSYMBOL_class_body = 53,                /* class_body  */
-  YYSYMBOL_class_members = 54,             /* class_members  */
-  YYSYMBOL_class_member = 55,              /* class_member  */
-  YYSYMBOL_function = 56,                  /* function  */
-  YYSYMBOL_params = 57,                    /* params  */
-  YYSYMBOL_args = 58,                      /* args  */
-  YYSYMBOL_expr = 59                       /* expr  */
+  YYSYMBOL_top_items = 48,                 /* top_items  */
+  YYSYMBOL_top_item = 49,                  /* top_item  */
+  YYSYMBOL_statements = 50,                /* statements  */
+  YYSYMBOL_statement = 51,                 /* statement  */
+  YYSYMBOL_declaration = 52,               /* declaration  */
+  YYSYMBOL_type = 53,                      /* type  */
+  YYSYMBOL_class = 54,                     /* class  */
+  YYSYMBOL_class_body = 55,                /* class_body  */
+  YYSYMBOL_class_member_list = 56,         /* class_member_list  */
+  YYSYMBOL_class_member = 57,              /* class_member  */
+  YYSYMBOL_function = 58,                  /* function  */
+  YYSYMBOL_params = 59,                    /* params  */
+  YYSYMBOL_args = 60,                      /* args  */
+  YYSYMBOL_expr = 61                       /* expr  */
 };
 typedef enum yysymbol_kind_t yysymbol_kind_t;
 
@@ -594,18 +498,18 @@ union yyalloc
 #endif /* !YYCOPY_NEEDED */
 
 /* YYFINAL -- State number of the termination state.  */
-#define YYFINAL  37
+#define YYFINAL  3
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   311
+#define YYLAST   323
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  46
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  14
+#define YYNNTS  16
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  60
+#define YYNRULES  68
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  134
+#define YYNSTATES  147
 
 /* YYMAXUTOK -- Last valid token kind.  */
 #define YYMAXUTOK   300
@@ -659,13 +563,13 @@ static const yytype_int8 yytranslate[] =
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    68,    68,    72,    73,    74,    78,    83,    84,    85,
-      86,    87,    88,    89,    90,    95,    97,    99,   104,   105,
-     108,   112,   113,   117,   120,   123,   126,   132,   136,   137,
-     142,   143,   145,   150,   151,   152,   156,   157,   158,   159,
-     160,   161,   162,   163,   164,   165,   166,   167,   168,   169,
-     170,   171,   172,   173,   174,   175,   176,   177,   178,   179,
-     180
+       0,    67,    67,    70,    72,    73,    77,    78,    79,    83,
+      84,    85,    89,    94,    95,    96,    97,    98,    99,   103,
+     105,   107,   112,   113,   117,   122,   123,   127,   128,   129,
+     130,   131,   132,   136,   140,   141,   146,   147,   149,   154,
+     155,   156,   160,   161,   162,   163,   164,   165,   166,   167,
+     168,   169,   170,   171,   172,   173,   174,   175,   176,   177,
+     178,   179,   180,   181,   182,   183,   184,   185,   186
 };
 #endif
 
@@ -688,9 +592,9 @@ static const char *const yytname[] =
   "S_PLUS", "S_MINUS", "S_DIV", "S_MOD", "S_MUL", "S_POW", "S_EQ", "S_NEQ",
   "S_LE", "S_GE", "S_LT", "S_GT", "S_AND", "S_OR", "S_NOT", "S_OBRACE",
   "S_CBRACE", "S_FLOAT_TYPE", "S_PRINTLN", "S_SQRT", "UMINUS", "$accept",
-  "file_content", "statements", "statement", "declaration", "type",
-  "class", "class_body", "class_members", "class_member", "function",
-  "params", "args", "expr", YY_NULLPTR
+  "file_content", "top_items", "top_item", "statements", "statement",
+  "declaration", "type", "class", "class_body", "class_member_list",
+  "class_member", "function", "params", "args", "expr", YY_NULLPTR
 };
 
 static const char *
@@ -700,7 +604,7 @@ yysymbol_name (yysymbol_kind_t yysymbol)
 }
 #endif
 
-#define YYPACT_NINF (-104)
+#define YYPACT_NINF (-114)
 
 #define yypact_value_is_default(Yyn) \
   ((Yyn) == YYPACT_NINF)
@@ -714,20 +618,21 @@ yysymbol_name (yysymbol_kind_t yysymbol)
    STATE-NUM.  */
 static const yytype_int16 yypact[] =
 {
-      53,    53,  -104,  -104,   -22,  -104,     6,    16,    46,    63,
-      44,   -20,    32,    44,    44,    44,    75,  -104,    53,    58,
-    -104,  -104,   105,  -104,    44,    44,    59,    41,    -5,    42,
-      45,   125,    44,    44,    64,    64,   161,  -104,  -104,  -104,
-    -104,    80,    44,    44,    44,    44,    44,    44,    44,    44,
-      44,    44,    44,    44,    44,    44,   145,    47,   180,    20,
-      83,    25,    44,    44,  -104,   196,   213,  -104,    50,    -2,
-      -2,   -16,   -16,   -16,   -16,   275,   275,    90,    90,    90,
-      90,   261,   246,  -104,  -104,    44,    76,    72,  -104,    20,
-      20,    78,    56,  -104,  -104,    74,   230,    65,    79,    84,
-      44,  -104,  -104,  -104,  -104,  -104,    25,    57,    44,  -104,
-      53,    53,    66,    88,    25,    53,   230,    89,    99,  -104,
-      83,    91,   100,   109,  -104,  -104,    53,  -104,   106,   104,
-      53,  -104,   123,  -104
+    -114,     8,    53,  -114,  -114,  -114,  -114,   -23,  -114,    20,
+      25,    69,    70,    43,    38,    41,    43,    43,    43,    49,
+      50,  -114,  -114,    72,  -114,  -114,   117,    43,    43,    73,
+      63,     0,    71,    75,   137,    43,    43,    86,    86,   173,
+      43,    43,  -114,  -114,   106,    43,    43,    43,    43,    43,
+      43,    43,    43,    43,    43,    43,    43,    43,    43,   157,
+      76,   192,     3,   107,    13,    43,    43,  -114,   208,   225,
+    -114,    78,    83,    91,    44,    44,   -14,   -14,   -14,   -14,
+     287,   287,   100,   100,   100,   100,   273,   258,  -114,  -114,
+      43,     3,    97,   110,  -114,     3,     3,   123,   116,  -114,
+    -114,   134,   242,   118,   140,   156,  -114,  -114,    43,  -114,
+    -114,  -114,  -114,  -114,  -114,    13,   -10,    43,  -114,    95,
+      95,   138,   158,    13,    95,   242,    95,   159,    95,   175,
+    -114,   107,   195,   191,  -114,   218,  -114,  -114,  -114,    95,
+    -114,   226,   260,    95,  -114,   275,  -114
 };
 
 /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -735,34 +640,35 @@ static const yytype_int16 yypact[] =
    means the default is an error.  */
 static const yytype_int8 yydefact[] =
 {
-       3,     3,    36,    37,    38,    39,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,     0,     0,     2,     3,     0,
-      13,    14,     0,     5,     0,    33,     0,     0,     0,     0,
-      38,     0,     0,     0,    49,    58,     0,     1,     4,     6,
-       7,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,     0,     0,     0,    34,    21,
-      30,     0,     0,    33,    12,     0,     0,    59,    42,    43,
-      44,    45,    47,    46,    48,    50,    51,    52,    53,    54,
-      55,    56,    57,     8,    40,    33,     0,     0,    22,    23,
-      25,     0,     0,    18,    19,    17,    16,     0,     0,     0,
-      33,    35,    27,    20,    24,    26,     0,     0,     0,    60,
-       3,     3,     0,    31,     0,     3,    15,     0,     0,    41,
-      30,     0,     0,     9,    11,    32,     3,    29,     0,     0,
-       3,    28,     0,    10
+       3,     0,     2,     1,     4,    42,    43,    44,    45,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     5,     8,     0,     7,     6,     0,     0,    39,     0,
+       0,     0,     0,    44,     0,     0,     0,    57,    66,     0,
+      39,    39,    12,    13,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,    40,    25,    36,     0,     0,    39,    18,     0,     0,
+      67,     0,     0,    50,    51,    52,    53,    55,    54,    56,
+      58,    59,    60,    61,    62,    63,    64,    65,    14,    48,
+      39,    30,     0,     0,    26,    31,    32,     0,     0,    22,
+      23,    21,    20,     0,     0,     0,    47,    46,    39,    41,
+      27,    33,    24,    28,    29,     0,     0,     0,    68,     9,
+       9,     0,    37,     0,     9,    19,     9,     0,     9,     0,
+      49,    36,     0,     0,    11,    15,    10,    17,    38,     9,
+      35,     0,     0,     9,    34,     0,    16
 };
 
 /* YYPGOTO[NTERM-NUM].  */
-static const yytype_int8 yypgoto[] =
+static const yytype_int16 yypgoto[] =
 {
-    -104,  -104,    -1,  -104,    12,  -103,  -104,  -104,   -81,  -104,
-      14,    26,   -53,    -9
+    -114,  -114,  -114,  -114,    -6,   262,   -11,  -113,  -114,  -114,
+     -66,  -114,   309,   187,   -20,   -13
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
-static const yytype_int8 yydefgoto[] =
+static const yytype_uint8 yydefgoto[] =
 {
-       0,    16,    17,    18,    19,    95,    20,    87,    88,    89,
-      21,    92,    57,    22
+       0,     1,     2,    21,   127,   128,    23,   101,    24,    93,
+      94,    95,    96,    98,    60,    26
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -770,118 +676,121 @@ static const yytype_int8 yydefgoto[] =
    number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_uint8 yytable[] =
 {
-      23,    31,    24,   113,    34,    35,    36,    41,   104,   105,
-      97,   121,    26,    61,    47,    56,    58,    38,    25,    62,
-      32,    41,    27,    65,    66,    44,    45,    46,    47,     7,
-       8,    93,   101,    69,    70,    71,    72,    73,    74,    75,
-      76,    77,    78,    79,    80,    81,    82,   112,     2,     3,
-      30,     5,    28,    96,    58,     9,     1,     2,     3,     4,
-       5,     6,     7,     8,     9,    10,    11,    94,    12,    29,
-      13,    86,    33,    90,   114,    37,    58,    39,   115,    13,
-      59,    60,    63,    14,    15,    25,    68,    41,    84,    91,
-     100,    58,    14,    15,   103,   102,   106,   107,   108,   116,
-     110,    86,    86,    90,    90,   111,   109,   119,   120,   117,
-     118,   123,   126,    41,   122,    42,    43,    44,    45,    46,
-      47,   124,   127,   128,    40,   129,   131,   130,    41,   132,
-      42,    43,    44,    45,    46,    47,    48,    49,    50,    51,
-      52,    53,    54,    55,    64,   133,   125,     0,    41,     0,
-      42,    43,    44,    45,    46,    47,    48,    49,    50,    51,
-      52,    53,    54,    55,    83,     0,     0,     0,    41,     0,
-      42,    43,    44,    45,    46,    47,    48,    49,    50,    51,
-      52,    53,    54,    55,    41,     0,    42,    43,    44,    45,
-      46,    47,    48,    49,    50,    51,    52,    53,    54,    55,
-      85,     0,    67,    41,     0,    42,    43,    44,    45,    46,
-      47,    48,    49,    50,    51,    52,    53,    54,    55,    41,
-       0,    42,    43,    44,    45,    46,    47,    48,    49,    50,
-      51,    52,    53,    54,    55,     0,    41,    98,    42,    43,
-      44,    45,    46,    47,    48,    49,    50,    51,    52,    53,
-      54,    55,     0,    41,    99,    42,    43,    44,    45,    46,
-      47,    48,    49,    50,    51,    52,    53,    54,    55,    41,
-       0,    42,    43,    44,    45,    46,    47,    48,    49,    50,
-      51,    52,    53,    54,    41,     0,    42,    43,    44,    45,
-      46,    47,    48,    49,    50,    51,    52,    53,    41,     0,
-      42,    43,    44,    45,    46,    47,     0,     0,    50,    51,
-      52,    53
+      34,    27,   122,    37,    38,    39,    91,   123,     3,    44,
+     132,   124,    10,    11,    59,    61,    50,    28,    64,    99,
+      71,    72,    68,    69,    65,   110,    29,    61,    61,   113,
+     114,    30,    74,    75,    76,    77,    78,    79,    80,    81,
+      82,    83,    84,    85,    86,    87,   103,     5,     6,    33,
+       8,    92,   102,    61,    12,   100,     4,     5,     6,     7,
+       8,     9,    10,    11,    12,    13,    14,    44,    15,    16,
+     109,    47,    48,    49,    50,    31,    32,    61,    35,    16,
+      92,    36,    17,    18,    92,    92,    19,    20,   121,    40,
+      41,    42,    17,    18,    62,    61,    19,    20,   126,     5,
+       6,     7,     8,    63,   125,    11,    12,    13,    14,    44,
+      15,    66,    73,    97,   129,    28,   111,    89,   133,   106,
+     134,    16,   136,    44,   107,    45,    46,    47,    48,    49,
+      50,   108,   112,   142,    17,    18,    43,   145,    19,    20,
+      44,   115,    45,    46,    47,    48,    49,    50,    51,    52,
+      53,    54,    55,    56,    57,    58,    67,   116,   117,   118,
+      44,   119,    45,    46,    47,    48,    49,    50,    51,    52,
+      53,    54,    55,    56,    57,    58,    88,   120,   131,   130,
+      44,   135,    45,    46,    47,    48,    49,    50,    51,    52,
+      53,    54,    55,    56,    57,    58,    44,   137,    45,    46,
+      47,    48,    49,    50,    51,    52,    53,    54,    55,    56,
+      57,    58,    90,   140,    70,    44,   139,    45,    46,    47,
+      48,    49,    50,    51,    52,    53,    54,    55,    56,    57,
+      58,    44,   141,    45,    46,    47,    48,    49,    50,    51,
+      52,    53,    54,    55,    56,    57,    58,   143,    44,   104,
+      45,    46,    47,    48,    49,    50,    51,    52,    53,    54,
+      55,    56,    57,    58,    22,    44,   105,    45,    46,    47,
+      48,    49,    50,    51,    52,    53,    54,    55,    56,    57,
+      58,    44,   144,    45,    46,    47,    48,    49,    50,    51,
+      52,    53,    54,    55,    56,    57,    44,   146,    45,    46,
+      47,    48,    49,    50,    51,    52,    53,    54,    55,    56,
+      44,    25,    45,    46,    47,    48,    49,    50,   138,     0,
+      53,    54,    55,    56
 };
 
 static const yytype_int16 yycheck[] =
 {
-       1,    10,    24,   106,    13,    14,    15,    23,    89,    90,
-      63,   114,     6,    18,    30,    24,    25,    18,    40,    24,
-      40,    23,     6,    32,    33,    27,    28,    29,    30,     9,
-      10,     6,    85,    42,    43,    44,    45,    46,    47,    48,
-      49,    50,    51,    52,    53,    54,    55,   100,     4,     5,
-       6,     7,     6,    62,    63,    11,     3,     4,     5,     6,
-       7,     8,     9,    10,    11,    12,    13,    42,    15,     6,
-      26,    59,    40,    59,    17,     0,    85,    19,    21,    26,
-      21,    40,    40,    39,    40,    40,     6,    23,    41,     6,
-      40,   100,    39,    40,    22,    19,    18,    41,    24,   108,
-      21,    89,    90,    89,    90,    21,    41,    41,    20,   110,
-     111,    22,    21,    23,   115,    25,    26,    27,    28,    29,
-      30,    22,    22,    14,    19,   126,    22,    21,    23,   130,
-      25,    26,    27,    28,    29,    30,    31,    32,    33,    34,
-      35,    36,    37,    38,    19,    22,   120,    -1,    23,    -1,
-      25,    26,    27,    28,    29,    30,    31,    32,    33,    34,
-      35,    36,    37,    38,    19,    -1,    -1,    -1,    23,    -1,
-      25,    26,    27,    28,    29,    30,    31,    32,    33,    34,
-      35,    36,    37,    38,    23,    -1,    25,    26,    27,    28,
-      29,    30,    31,    32,    33,    34,    35,    36,    37,    38,
-      20,    -1,    41,    23,    -1,    25,    26,    27,    28,    29,
-      30,    31,    32,    33,    34,    35,    36,    37,    38,    23,
-      -1,    25,    26,    27,    28,    29,    30,    31,    32,    33,
-      34,    35,    36,    37,    38,    -1,    23,    41,    25,    26,
+      13,    24,   115,    16,    17,    18,     3,    17,     0,    23,
+     123,    21,     9,    10,    27,    28,    30,    40,    18,     6,
+      40,    41,    35,    36,    24,    91,     6,    40,    41,    95,
+      96,     6,    45,    46,    47,    48,    49,    50,    51,    52,
+      53,    54,    55,    56,    57,    58,    66,     4,     5,     6,
+       7,    62,    65,    66,    11,    42,     3,     4,     5,     6,
+       7,     8,     9,    10,    11,    12,    13,    23,    15,    26,
+      90,    27,    28,    29,    30,     6,     6,    90,    40,    26,
+      91,    40,    39,    40,    95,    96,    43,    44,   108,    40,
+      40,    19,    39,    40,    21,   108,    43,    44,     3,     4,
+       5,     6,     7,    40,   117,    10,    11,    12,    13,    23,
+      15,    40,     6,     6,   120,    40,    19,    41,   124,    41,
+     126,    26,   128,    23,    41,    25,    26,    27,    28,    29,
+      30,    40,    22,   139,    39,    40,    19,   143,    43,    44,
+      23,    18,    25,    26,    27,    28,    29,    30,    31,    32,
+      33,    34,    35,    36,    37,    38,    19,    41,    24,    41,
+      23,    21,    25,    26,    27,    28,    29,    30,    31,    32,
+      33,    34,    35,    36,    37,    38,    19,    21,    20,    41,
+      23,    22,    25,    26,    27,    28,    29,    30,    31,    32,
+      33,    34,    35,    36,    37,    38,    23,    22,    25,    26,
       27,    28,    29,    30,    31,    32,    33,    34,    35,    36,
-      37,    38,    -1,    23,    41,    25,    26,    27,    28,    29,
-      30,    31,    32,    33,    34,    35,    36,    37,    38,    23,
-      -1,    25,    26,    27,    28,    29,    30,    31,    32,    33,
-      34,    35,    36,    37,    23,    -1,    25,    26,    27,    28,
-      29,    30,    31,    32,    33,    34,    35,    36,    23,    -1,
-      25,    26,    27,    28,    29,    30,    -1,    -1,    33,    34,
-      35,    36
+      37,    38,    20,    22,    41,    23,    21,    25,    26,    27,
+      28,    29,    30,    31,    32,    33,    34,    35,    36,    37,
+      38,    23,    14,    25,    26,    27,    28,    29,    30,    31,
+      32,    33,    34,    35,    36,    37,    38,    21,    23,    41,
+      25,    26,    27,    28,    29,    30,    31,    32,    33,    34,
+      35,    36,    37,    38,     2,    23,    41,    25,    26,    27,
+      28,    29,    30,    31,    32,    33,    34,    35,    36,    37,
+      38,    23,    22,    25,    26,    27,    28,    29,    30,    31,
+      32,    33,    34,    35,    36,    37,    23,    22,    25,    26,
+      27,    28,    29,    30,    31,    32,    33,    34,    35,    36,
+      23,     2,    25,    26,    27,    28,    29,    30,   131,    -1,
+      33,    34,    35,    36
 };
 
 /* YYSTOS[STATE-NUM] -- The symbol kind of the accessing symbol of
    state STATE-NUM.  */
 static const yytype_int8 yystos[] =
 {
-       0,     3,     4,     5,     6,     7,     8,     9,    10,    11,
-      12,    13,    15,    26,    39,    40,    47,    48,    49,    50,
-      52,    56,    59,    48,    24,    40,     6,     6,     6,     6,
-       6,    59,    40,    40,    59,    59,    59,     0,    48,    19,
-      19,    23,    25,    26,    27,    28,    29,    30,    31,    32,
-      33,    34,    35,    36,    37,    38,    59,    58,    59,    21,
-      40,    18,    24,    40,    19,    59,    59,    41,     6,    59,
-      59,    59,    59,    59,    59,    59,    59,    59,    59,    59,
-      59,    59,    59,    19,    41,    20,    50,    53,    54,    55,
-      56,     6,    57,     6,    42,    51,    59,    58,    41,    41,
-      40,    58,    19,    22,    54,    54,    18,    41,    24,    41,
-      21,    21,    58,    51,    17,    21,    59,    48,    48,    41,
-      20,    51,    48,    22,    22,    57,    21,    22,    14,    48,
-      21,    22,    48,    22
+       0,    47,    48,     0,     3,     4,     5,     6,     7,     8,
+       9,    10,    11,    12,    13,    15,    26,    39,    40,    43,
+      44,    49,    51,    52,    54,    58,    61,    24,    40,     6,
+       6,     6,     6,     6,    61,    40,    40,    61,    61,    61,
+      40,    40,    19,    19,    23,    25,    26,    27,    28,    29,
+      30,    31,    32,    33,    34,    35,    36,    37,    38,    61,
+      60,    61,    21,    40,    18,    24,    40,    19,    61,    61,
+      41,    60,    60,     6,    61,    61,    61,    61,    61,    61,
+      61,    61,    61,    61,    61,    61,    61,    61,    19,    41,
+      20,     3,    52,    55,    56,    57,    58,     6,    59,     6,
+      42,    53,    61,    60,    41,    41,    41,    41,    40,    60,
+      56,    19,    22,    56,    56,    18,    41,    24,    41,    21,
+      21,    60,    53,    17,    21,    61,     3,    50,    51,    50,
+      41,    20,    53,    50,    50,    22,    50,    22,    59,    21,
+      22,    14,    50,    21,    22,    50,    22
 };
 
 /* YYR1[RULE-NUM] -- Symbol kind of the left-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr1[] =
 {
-       0,    46,    47,    48,    48,    48,    49,    49,    49,    49,
-      49,    49,    49,    49,    49,    50,    50,    50,    51,    51,
-      52,    53,    53,    54,    54,    54,    54,    55,    56,    56,
-      57,    57,    57,    58,    58,    58,    59,    59,    59,    59,
-      59,    59,    59,    59,    59,    59,    59,    59,    59,    59,
-      59,    59,    59,    59,    59,    59,    59,    59,    59,    59,
-      59
+       0,    46,    47,    48,    48,    48,    49,    49,    49,    50,
+      50,    50,    51,    51,    51,    51,    51,    51,    51,    52,
+      52,    52,    53,    53,    54,    55,    55,    56,    56,    56,
+      56,    56,    56,    57,    58,    58,    59,    59,    59,    60,
+      60,    60,    61,    61,    61,    61,    61,    61,    61,    61,
+      61,    61,    61,    61,    61,    61,    61,    61,    61,    61,
+      61,    61,    61,    61,    61,    61,    61,    61,    61
 };
 
 /* YYR2[RULE-NUM] -- Number of symbols on the right-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr2[] =
 {
-       0,     2,     1,     0,     2,     2,     2,     2,     4,     7,
-      11,     7,     3,     1,     1,     6,     4,     4,     1,     1,
-       5,     0,     1,     1,     2,     1,     2,     2,    10,     8,
-       0,     3,     5,     0,     1,     3,     1,     1,     1,     1,
-       4,     6,     3,     3,     3,     3,     3,     3,     3,     2,
-       3,     3,     3,     3,     3,     3,     3,     3,     2,     3,
-       5
+       0,     2,     1,     0,     2,     2,     1,     1,     1,     0,
+       2,     2,     2,     2,     4,     7,    11,     7,     3,     6,
+       4,     4,     1,     1,     5,     0,     1,     2,     2,     2,
+       1,     1,     1,     2,    10,     8,     0,     3,     5,     0,
+       1,     3,     1,     1,     1,     1,     4,     4,     4,     6,
+       3,     3,     3,     3,     3,     3,     3,     2,     3,     3,
+       3,     3,     3,     3,     3,     3,     2,     3,     5
 };
 
 
@@ -1344,374 +1253,384 @@ yyreduce:
   YY_REDUCE_PRINT (yyn);
   switch (yyn)
     {
-  case 2: /* file_content: statements  */
-#line 68 "aritmetic.y"
-               { if (!(yyvsp[0].statementNode)) printf("File is empty!\n"); else AST_add_statement(ast, (yyvsp[0].statementNode)); }
-#line 1351 "aritmetic.tab.c"
+  case 6: /* top_item: function  */
+#line 77 "aritmetic.y"
+                 { AST_add_function(ast, (yyvsp[0].functionNode)); }
+#line 1260 "build/aritmetic.y.c"
     break;
 
-  case 3: /* statements: %empty  */
-#line 72 "aritmetic.y"
-                 { (yyval.statementNode) = NULL; }
-#line 1357 "aritmetic.tab.c"
-    break;
-
-  case 4: /* statements: statement statements  */
-#line 73 "aritmetic.y"
-                           { /* ... */ }
-#line 1363 "aritmetic.tab.c"
-    break;
-
-  case 5: /* statements: S_NEWLINE statements  */
-#line 74 "aritmetic.y"
-                           { (yyval.statementNode) = (yyvsp[0].statementNode); }
-#line 1369 "aritmetic.tab.c"
-    break;
-
-  case 6: /* statement: declaration S_SEMICOLON  */
+  case 7: /* top_item: class  */
 #line 78 "aritmetic.y"
+                 { AST_add_class(ast, (yyvsp[0].classNode)); }
+#line 1266 "build/aritmetic.y.c"
+    break;
+
+  case 9: /* statements: %empty  */
+#line 83 "aritmetic.y"
+                 { (yyval.statementNode) = NULL; }
+#line 1272 "build/aritmetic.y.c"
+    break;
+
+  case 10: /* statements: statement statements  */
+#line 84 "aritmetic.y"
+                           { /* ... */ }
+#line 1278 "build/aritmetic.y.c"
+    break;
+
+  case 11: /* statements: S_NEWLINE statements  */
+#line 85 "aritmetic.y"
+                           { (yyval.statementNode) = (yyvsp[0].statementNode); }
+#line 1284 "build/aritmetic.y.c"
+    break;
+
+  case 12: /* statement: declaration S_SEMICOLON  */
+#line 89 "aritmetic.y"
                             { 
         VariableNode* var = VariableNode_create((yyvsp[-1].declarationNode)->identifier, (yyvsp[-1].declarationNode)->type, (yyvsp[-1].declarationNode)->assigned_expression, yylineno); 
         (yyval.statementNode) = StatementNode_create_var(var); 
         AST_add_variable(ast, var); 
     }
-#line 1379 "aritmetic.tab.c"
+#line 1294 "build/aritmetic.y.c"
     break;
 
-  case 7: /* statement: expr S_SEMICOLON  */
-#line 83 "aritmetic.y"
+  case 13: /* statement: expr S_SEMICOLON  */
+#line 94 "aritmetic.y"
                                        { (yyval.statementNode) = StatementNode_create_expr((yyvsp[-1].expressionNode)); }
-#line 1385 "aritmetic.tab.c"
+#line 1300 "build/aritmetic.y.c"
     break;
 
-  case 8: /* statement: IDENTIFIER S_EQUALS expr S_SEMICOLON  */
-#line 84 "aritmetic.y"
+  case 14: /* statement: IDENTIFIER S_EQUALS expr S_SEMICOLON  */
+#line 95 "aritmetic.y"
                                              { (yyval.statementNode) = StatementNode_create_assign(ExpressionNode_create_identifier((yyvsp[-3].strVal), yylineno), (yyvsp[-1].expressionNode)); }
-#line 1391 "aritmetic.tab.c"
+#line 1306 "build/aritmetic.y.c"
     break;
 
-  case 9: /* statement: S_IF S_OBRACE expr S_CBRACE S_LBRACE statements S_RBRACE  */
-#line 85 "aritmetic.y"
-                                                               { (yyval.statementNode) = StatementNode_create_if((yyvsp[-4].expressionNode), (yyvsp[-1].statementNode), NULL); }
-#line 1397 "aritmetic.tab.c"
-    break;
-
-  case 10: /* statement: S_IF S_OBRACE expr S_CBRACE S_LBRACE statements S_RBRACE S_ELSE S_LBRACE statements S_RBRACE  */
-#line 86 "aritmetic.y"
-                                                                                                   { (yyval.statementNode) = StatementNode_create_if((yyvsp[-8].expressionNode), (yyvsp[-5].statementNode), (yyvsp[-1].statementNode)); }
-#line 1403 "aritmetic.tab.c"
-    break;
-
-  case 11: /* statement: S_WHILE S_OBRACE expr S_CBRACE S_LBRACE statements S_RBRACE  */
-#line 87 "aritmetic.y"
-                                                                  { (yyval.statementNode) = StatementNode_create_while((yyvsp[-4].expressionNode), (yyvsp[-1].statementNode)); }
-#line 1409 "aritmetic.tab.c"
-    break;
-
-  case 12: /* statement: S_RETURN expr S_SEMICOLON  */
-#line 88 "aritmetic.y"
-                                       { (yyval.statementNode) = StatementNode_create_return((yyvsp[-1].expressionNode)); }
-#line 1415 "aritmetic.tab.c"
-    break;
-
-  case 13: /* statement: class  */
-#line 89 "aritmetic.y"
-                                       { (yyval.statementNode) = StatementNode_create_list(NULL, NULL, yylineno); AST_add_class(ast, (yyvsp[0].classNode)); }
-#line 1421 "aritmetic.tab.c"
-    break;
-
-  case 14: /* statement: function  */
-#line 90 "aritmetic.y"
-                                       { (yyval.statementNode) = StatementNode_create_list(NULL, NULL, yylineno); AST_add_function(ast, (yyvsp[0].functionNode)); }
-#line 1427 "aritmetic.tab.c"
-    break;
-
-  case 15: /* declaration: S_VAR IDENTIFIER S_COLON type S_EQUALS expr  */
+  case 15: /* statement: S_IF S_OBRACE expr S_CBRACE S_LBRACE statements S_RBRACE  */
 #line 96 "aritmetic.y"
-        { (yyval.declarationNode) = DeclarationNode_create((yyvsp[-4].strVal), (yyvsp[-2].strVal), (yyvsp[0].expressionNode), yylineno); }
-#line 1433 "aritmetic.tab.c"
+                                                               { (yyval.statementNode) = StatementNode_create_if((yyvsp[-4].expressionNode), (yyvsp[-1].statementNode), NULL); }
+#line 1312 "build/aritmetic.y.c"
     break;
 
-  case 16: /* declaration: S_VAR IDENTIFIER S_EQUALS expr  */
+  case 16: /* statement: S_IF S_OBRACE expr S_CBRACE S_LBRACE statements S_RBRACE S_ELSE S_LBRACE statements S_RBRACE  */
+#line 97 "aritmetic.y"
+                                                                                                   { (yyval.statementNode) = StatementNode_create_if((yyvsp[-8].expressionNode), (yyvsp[-5].statementNode), (yyvsp[-1].statementNode)); }
+#line 1318 "build/aritmetic.y.c"
+    break;
+
+  case 17: /* statement: S_WHILE S_OBRACE expr S_CBRACE S_LBRACE statements S_RBRACE  */
 #line 98 "aritmetic.y"
-        { (yyval.declarationNode) = DeclarationNode_create((yyvsp[-2].strVal), NULL, (yyvsp[0].expressionNode), yylineno); }
-#line 1439 "aritmetic.tab.c"
+                                                                  { (yyval.statementNode) = StatementNode_create_while((yyvsp[-4].expressionNode), (yyvsp[-1].statementNode)); }
+#line 1324 "build/aritmetic.y.c"
     break;
 
-  case 17: /* declaration: S_VAR IDENTIFIER S_COLON type  */
-#line 100 "aritmetic.y"
-        { (yyval.declarationNode) = DeclarationNode_create((yyvsp[-2].strVal), (yyvsp[0].strVal), NULL, yylineno); }
-#line 1445 "aritmetic.tab.c"
+  case 18: /* statement: S_RETURN expr S_SEMICOLON  */
+#line 99 "aritmetic.y"
+                                       { (yyval.statementNode) = StatementNode_create_return((yyvsp[-1].expressionNode)); }
+#line 1330 "build/aritmetic.y.c"
     break;
 
-  case 18: /* type: IDENTIFIER  */
+  case 19: /* declaration: S_VAR IDENTIFIER S_COLON type S_EQUALS expr  */
 #line 104 "aritmetic.y"
-                        { (yyval.strVal) = (yyvsp[0].strVal); }
-#line 1451 "aritmetic.tab.c"
+        { (yyval.declarationNode) = DeclarationNode_create((yyvsp[-4].strVal), (yyvsp[-2].strVal), (yyvsp[0].expressionNode), yylineno); }
+#line 1336 "build/aritmetic.y.c"
     break;
 
-  case 19: /* type: S_FLOAT_TYPE  */
-#line 105 "aritmetic.y"
-                        { (yyval.strVal) = strdup("float"); }
-#line 1457 "aritmetic.tab.c"
+  case 20: /* declaration: S_VAR IDENTIFIER S_EQUALS expr  */
+#line 106 "aritmetic.y"
+        { (yyval.declarationNode) = DeclarationNode_create((yyvsp[-2].strVal), NULL, (yyvsp[0].expressionNode), yylineno); }
+#line 1342 "build/aritmetic.y.c"
     break;
 
-  case 20: /* class: S_CLASS IDENTIFIER S_LBRACE class_body S_RBRACE  */
+  case 21: /* declaration: S_VAR IDENTIFIER S_COLON type  */
 #line 108 "aritmetic.y"
-                                                     { (yyval.classNode) = ClassNode_create((yyvsp[-3].strVal), (yyvsp[-1].classNode) ? (yyvsp[-1].classNode)->fields : NULL, (yyvsp[-1].classNode) ? (yyvsp[-1].classNode)->methods : NULL); }
-#line 1463 "aritmetic.tab.c"
+        { (yyval.declarationNode) = DeclarationNode_create((yyvsp[-2].strVal), (yyvsp[0].strVal), NULL, yylineno); }
+#line 1348 "build/aritmetic.y.c"
     break;
 
-  case 21: /* class_body: %empty  */
+  case 22: /* type: IDENTIFIER  */
 #line 112 "aritmetic.y"
-                                       { (yyval.classNode) = NULL; }
-#line 1469 "aritmetic.tab.c"
+                        { (yyval.strVal) = (yyvsp[0].strVal); }
+#line 1354 "build/aritmetic.y.c"
     break;
 
-  case 22: /* class_body: class_members  */
+  case 23: /* type: S_FLOAT_TYPE  */
 #line 113 "aritmetic.y"
-                                       { (yyval.classNode) = (yyvsp[0].classNode); }
-#line 1475 "aritmetic.tab.c"
+                        { (yyval.strVal) = strdup("float"); }
+#line 1360 "build/aritmetic.y.c"
     break;
 
-  case 23: /* class_members: class_member  */
-#line 117 "aritmetic.y"
-                 { 
-        (yyval.classNode) = ClassNode_create_body(NULL, (yyvsp[0].declarationNode), NULL, yylineno); 
-    }
-#line 1483 "aritmetic.tab.c"
+  case 24: /* class: S_CLASS IDENTIFIER S_LBRACE class_body S_RBRACE  */
+#line 118 "aritmetic.y"
+        { (yyval.classNode) = ClassNode_create((yyvsp[-3].strVal), (yyvsp[-1].classNode) ? (yyvsp[-1].classNode)->fields : NULL, (yyvsp[-1].classNode) ? (yyvsp[-1].classNode)->methods : NULL); }
+#line 1366 "build/aritmetic.y.c"
     break;
 
-  case 24: /* class_members: class_member class_members  */
-#line 120 "aritmetic.y"
-                                 { 
-        (yyval.classNode) = ClassNode_create_body(NULL, (yyvsp[-1].declarationNode), (yyvsp[0].classNode), yylineno); 
-    }
-#line 1491 "aritmetic.tab.c"
+  case 25: /* class_body: %empty  */
+#line 122 "aritmetic.y"
+                                      { (yyval.classNode) = NULL; }
+#line 1372 "build/aritmetic.y.c"
     break;
 
-  case 25: /* class_members: function  */
+  case 26: /* class_body: class_member_list  */
 #line 123 "aritmetic.y"
-               { 
-        (yyval.classNode) = ClassNode_create_body((yyvsp[0].functionNode), NULL, NULL, yylineno); 
-    }
-#line 1499 "aritmetic.tab.c"
+                                      { (yyval.classNode) = (yyvsp[0].classNode); }
+#line 1378 "build/aritmetic.y.c"
     break;
 
-  case 26: /* class_members: function class_members  */
-#line 126 "aritmetic.y"
-                             { 
-        (yyval.classNode) = ClassNode_create_body((yyvsp[-1].functionNode), NULL, (yyvsp[0].classNode), yylineno); 
-    }
-#line 1507 "aritmetic.tab.c"
+  case 27: /* class_member_list: S_NEWLINE class_member_list  */
+#line 127 "aritmetic.y"
+                                      { (yyval.classNode) = (yyvsp[0].classNode); }
+#line 1384 "build/aritmetic.y.c"
     break;
 
-  case 27: /* class_member: declaration S_SEMICOLON  */
+  case 28: /* class_member_list: class_member class_member_list  */
+#line 128 "aritmetic.y"
+                                      { (yyval.classNode) = ClassNode_create_body(NULL, (yyvsp[-1].declarationNode), (yyvsp[0].classNode), yylineno); }
+#line 1390 "build/aritmetic.y.c"
+    break;
+
+  case 29: /* class_member_list: function class_member_list  */
+#line 129 "aritmetic.y"
+                                      { (yyval.classNode) = ClassNode_create_body((yyvsp[-1].functionNode), NULL, (yyvsp[0].classNode), yylineno); }
+#line 1396 "build/aritmetic.y.c"
+    break;
+
+  case 30: /* class_member_list: S_NEWLINE  */
+#line 130 "aritmetic.y"
+                                      { (yyval.classNode) = NULL; }
+#line 1402 "build/aritmetic.y.c"
+    break;
+
+  case 31: /* class_member_list: class_member  */
+#line 131 "aritmetic.y"
+                                      { (yyval.classNode) = ClassNode_create_body(NULL, (yyvsp[0].declarationNode), NULL, yylineno); }
+#line 1408 "build/aritmetic.y.c"
+    break;
+
+  case 32: /* class_member_list: function  */
 #line 132 "aritmetic.y"
-                            { (yyval.declarationNode) = (yyvsp[-1].declarationNode); }
-#line 1513 "aritmetic.tab.c"
+                                      { (yyval.classNode) = ClassNode_create_body((yyvsp[0].functionNode), NULL, NULL, yylineno); }
+#line 1414 "build/aritmetic.y.c"
     break;
 
-  case 28: /* function: S_FUNC IDENTIFIER S_OBRACE params S_CBRACE S_ARROW type S_LBRACE statements S_RBRACE  */
+  case 33: /* class_member: declaration S_SEMICOLON  */
 #line 136 "aritmetic.y"
+                                      { (yyval.declarationNode) = (yyvsp[-1].declarationNode); }
+#line 1420 "build/aritmetic.y.c"
+    break;
+
+  case 34: /* function: S_FUNC IDENTIFIER S_OBRACE params S_CBRACE S_ARROW type S_LBRACE statements S_RBRACE  */
+#line 140 "aritmetic.y"
                                                                                           { (yyval.functionNode) = FunctionNode_create((yyvsp[-8].strVal), (yyvsp[-6].paramNode), (yyvsp[-3].strVal), (yyvsp[-1].statementNode), yylineno); }
-#line 1519 "aritmetic.tab.c"
+#line 1426 "build/aritmetic.y.c"
     break;
 
-  case 29: /* function: S_FUNC IDENTIFIER S_OBRACE params S_CBRACE S_LBRACE statements S_RBRACE  */
-#line 137 "aritmetic.y"
+  case 35: /* function: S_FUNC IDENTIFIER S_OBRACE params S_CBRACE S_LBRACE statements S_RBRACE  */
+#line 141 "aritmetic.y"
                                                                                { (yyval.functionNode) = FunctionNode_create((yyvsp[-6].strVal), (yyvsp[-4].paramNode), NULL, (yyvsp[-1].statementNode), yylineno); }
-#line 1525 "aritmetic.tab.c"
+#line 1432 "build/aritmetic.y.c"
     break;
 
-  case 30: /* params: %empty  */
-#line 142 "aritmetic.y"
-        { (yyval.paramNode) = NULL; }
-#line 1531 "aritmetic.tab.c"
-    break;
-
-  case 31: /* params: IDENTIFIER S_COLON type  */
-#line 144 "aritmetic.y"
-        { (yyval.paramNode) = ParamNode_create((yyvsp[-2].strVal), (yyvsp[0].strVal), NULL, yylineno); }
-#line 1537 "aritmetic.tab.c"
-    break;
-
-  case 32: /* params: IDENTIFIER S_COLON type S_COMMA params  */
+  case 36: /* params: %empty  */
 #line 146 "aritmetic.y"
-        { (yyval.paramNode) = ParamNode_create((yyvsp[-4].strVal), (yyvsp[-2].strVal), (yyvsp[0].paramNode), yylineno); }
-#line 1543 "aritmetic.tab.c"
+        { (yyval.paramNode) = NULL; }
+#line 1438 "build/aritmetic.y.c"
     break;
 
-  case 33: /* args: %empty  */
+  case 37: /* params: IDENTIFIER S_COLON type  */
+#line 148 "aritmetic.y"
+        { (yyval.paramNode) = ParamNode_create((yyvsp[-2].strVal), (yyvsp[0].strVal), NULL, yylineno); }
+#line 1444 "build/aritmetic.y.c"
+    break;
+
+  case 38: /* params: IDENTIFIER S_COLON type S_COMMA params  */
 #line 150 "aritmetic.y"
+        { (yyval.paramNode) = ParamNode_create((yyvsp[-4].strVal), (yyvsp[-2].strVal), (yyvsp[0].paramNode), yylineno); }
+#line 1450 "build/aritmetic.y.c"
+    break;
+
+  case 39: /* args: %empty  */
+#line 154 "aritmetic.y"
                                        { (yyval.argNode) = NULL; }
-#line 1549 "aritmetic.tab.c"
+#line 1456 "build/aritmetic.y.c"
     break;
 
-  case 34: /* args: expr  */
-#line 151 "aritmetic.y"
+  case 40: /* args: expr  */
+#line 155 "aritmetic.y"
                                        { (yyval.argNode) = ArgNode_create((yyvsp[0].expressionNode), NULL, yylineno); }
-#line 1555 "aritmetic.tab.c"
+#line 1462 "build/aritmetic.y.c"
     break;
 
-  case 35: /* args: expr S_COMMA args  */
-#line 152 "aritmetic.y"
-                                       { (yyval.argNode) = ArgNode_create((yyvsp[-2].expressionNode), (yyvsp[0].argNode), yylineno); }
-#line 1561 "aritmetic.tab.c"
-    break;
-
-  case 36: /* expr: NUMBER  */
+  case 41: /* args: expr S_COMMA args  */
 #line 156 "aritmetic.y"
-                                      { (yyval.expressionNode) = ExpressionNode_create_number((yyvsp[0].integer), yylineno); }
-#line 1567 "aritmetic.tab.c"
+                                       { (yyval.argNode) = ArgNode_create((yyvsp[-2].expressionNode), (yyvsp[0].argNode), yylineno); }
+#line 1468 "build/aritmetic.y.c"
     break;
 
-  case 37: /* expr: FLOAT  */
-#line 157 "aritmetic.y"
-                                      { (yyval.expressionNode) = ExpressionNode_create_float((yyvsp[0].floatVal), yylineno); }
-#line 1573 "aritmetic.tab.c"
-    break;
-
-  case 38: /* expr: IDENTIFIER  */
-#line 158 "aritmetic.y"
-                                      { (yyval.expressionNode) = ExpressionNode_create_identifier((yyvsp[0].strVal), yylineno); }
-#line 1579 "aritmetic.tab.c"
-    break;
-
-  case 39: /* expr: STRING  */
-#line 159 "aritmetic.y"
-                                      { (yyval.expressionNode) = ExpressionNode_create_string((yyvsp[0].strVal), yylineno); }
-#line 1585 "aritmetic.tab.c"
-    break;
-
-  case 40: /* expr: IDENTIFIER S_OBRACE args S_CBRACE  */
+  case 42: /* expr: NUMBER  */
 #line 160 "aritmetic.y"
-                                        { (yyval.expressionNode) = ExpressionNode_create_function_call(FunctionNode_create_call((yyvsp[-3].strVal), (yyvsp[-1].argNode), yylineno), yylineno); }
-#line 1591 "aritmetic.tab.c"
+                                      { (yyval.expressionNode) = ExpressionNode_create_number((yyvsp[0].integer), yylineno); }
+#line 1474 "build/aritmetic.y.c"
     break;
 
-  case 41: /* expr: expr S_DOT IDENTIFIER S_OBRACE args S_CBRACE  */
+  case 43: /* expr: FLOAT  */
 #line 161 "aritmetic.y"
-                                                   { (yyval.expressionNode) = ExpressionNode_create_function_call(FunctionNode_create_method_call((yyvsp[-5].expressionNode), (yyvsp[-3].strVal), (yyvsp[-1].argNode), yylineno), yylineno); }
-#line 1597 "aritmetic.tab.c"
+                                      { (yyval.expressionNode) = ExpressionNode_create_float((yyvsp[0].floatVal), yylineno); }
+#line 1480 "build/aritmetic.y.c"
     break;
 
-  case 42: /* expr: expr S_DOT IDENTIFIER  */
+  case 44: /* expr: IDENTIFIER  */
 #line 162 "aritmetic.y"
-                                      { (yyval.expressionNode) = ExpressionNode_create_member_access((yyvsp[-2].expressionNode), (yyvsp[0].strVal), yylineno); }
-#line 1603 "aritmetic.tab.c"
+                                      { (yyval.expressionNode) = ExpressionNode_create_identifier((yyvsp[0].strVal), yylineno); }
+#line 1486 "build/aritmetic.y.c"
     break;
 
-  case 43: /* expr: expr S_PLUS expr  */
+  case 45: /* expr: STRING  */
 #line 163 "aritmetic.y"
-                                      { (yyval.expressionNode) = ExpressionNode_create_operation(OPERATION_PLUS, (yyvsp[-2].expressionNode), (yyvsp[0].expressionNode), yylineno); }
-#line 1609 "aritmetic.tab.c"
+                                      { (yyval.expressionNode) = ExpressionNode_create_string((yyvsp[0].strVal), yylineno); }
+#line 1492 "build/aritmetic.y.c"
     break;
 
-  case 44: /* expr: expr S_MINUS expr  */
+  case 46: /* expr: S_SQRT S_OBRACE args S_CBRACE  */
 #line 164 "aritmetic.y"
-                                      { (yyval.expressionNode) = ExpressionNode_create_operation(OPERATION_MINUS, (yyvsp[-2].expressionNode), (yyvsp[0].expressionNode), yylineno); }
-#line 1615 "aritmetic.tab.c"
+                                      { (yyval.expressionNode) = ExpressionNode_create_function_call(FunctionNode_create_call("sqrt", (yyvsp[-1].argNode), yylineno), yylineno); }
+#line 1498 "build/aritmetic.y.c"
     break;
 
-  case 45: /* expr: expr S_DIV expr  */
+  case 47: /* expr: S_PRINTLN S_OBRACE args S_CBRACE  */
 #line 165 "aritmetic.y"
-                                      { (yyval.expressionNode) = ExpressionNode_create_operation(OPERATION_DIV, (yyvsp[-2].expressionNode), (yyvsp[0].expressionNode), yylineno); }
-#line 1621 "aritmetic.tab.c"
+                                          { (yyval.expressionNode) = ExpressionNode_create_function_call(FunctionNode_create_call("println", (yyvsp[-1].argNode), yylineno), yylineno); }
+#line 1504 "build/aritmetic.y.c"
     break;
 
-  case 46: /* expr: expr S_MUL expr  */
+  case 48: /* expr: IDENTIFIER S_OBRACE args S_CBRACE  */
 #line 166 "aritmetic.y"
-                                      { (yyval.expressionNode) = ExpressionNode_create_operation(OPERATION_MUL, (yyvsp[-2].expressionNode), (yyvsp[0].expressionNode), yylineno); }
-#line 1627 "aritmetic.tab.c"
+                                        { (yyval.expressionNode) = ExpressionNode_create_function_call(FunctionNode_create_call((yyvsp[-3].strVal), (yyvsp[-1].argNode), yylineno), yylineno); }
+#line 1510 "build/aritmetic.y.c"
     break;
 
-  case 47: /* expr: expr S_MOD expr  */
+  case 49: /* expr: expr S_DOT IDENTIFIER S_OBRACE args S_CBRACE  */
 #line 167 "aritmetic.y"
-                                      { (yyval.expressionNode) = ExpressionNode_create_operation(OPERATION_MOD, (yyvsp[-2].expressionNode), (yyvsp[0].expressionNode), yylineno); }
-#line 1633 "aritmetic.tab.c"
+                                                   { (yyval.expressionNode) = ExpressionNode_create_function_call(FunctionNode_create_method_call((yyvsp[-5].expressionNode), (yyvsp[-3].strVal), (yyvsp[-1].argNode), yylineno), yylineno); }
+#line 1516 "build/aritmetic.y.c"
     break;
 
-  case 48: /* expr: expr S_POW expr  */
+  case 50: /* expr: expr S_DOT IDENTIFIER  */
 #line 168 "aritmetic.y"
-                                      { (yyval.expressionNode) = ExpressionNode_create_operation(OPERATION_POW, (yyvsp[-2].expressionNode), (yyvsp[0].expressionNode), yylineno); }
-#line 1639 "aritmetic.tab.c"
+                                      { (yyval.expressionNode) = ExpressionNode_create_member_access((yyvsp[-2].expressionNode), (yyvsp[0].strVal), yylineno); }
+#line 1522 "build/aritmetic.y.c"
     break;
 
-  case 49: /* expr: S_MINUS expr  */
+  case 51: /* expr: expr S_PLUS expr  */
 #line 169 "aritmetic.y"
-                                      { (yyval.expressionNode) = ExpressionNode_create_operation(OPERATION_UNARY_MINUS, (yyvsp[0].expressionNode), NULL, yylineno); }
-#line 1645 "aritmetic.tab.c"
+                                      { (yyval.expressionNode) = ExpressionNode_create_operation(OPERATION_PLUS, (yyvsp[-2].expressionNode), (yyvsp[0].expressionNode), yylineno); }
+#line 1528 "build/aritmetic.y.c"
     break;
 
-  case 50: /* expr: expr S_EQ expr  */
+  case 52: /* expr: expr S_MINUS expr  */
 #line 170 "aritmetic.y"
-                                      { (yyval.expressionNode) = ExpressionNode_create_operation(OPERATION_EQ, (yyvsp[-2].expressionNode), (yyvsp[0].expressionNode), yylineno); }
-#line 1651 "aritmetic.tab.c"
+                                      { (yyval.expressionNode) = ExpressionNode_create_operation(OPERATION_MINUS, (yyvsp[-2].expressionNode), (yyvsp[0].expressionNode), yylineno); }
+#line 1534 "build/aritmetic.y.c"
     break;
 
-  case 51: /* expr: expr S_NEQ expr  */
+  case 53: /* expr: expr S_DIV expr  */
 #line 171 "aritmetic.y"
-                                      { (yyval.expressionNode) = ExpressionNode_create_operation(OPERATION_NEQ, (yyvsp[-2].expressionNode), (yyvsp[0].expressionNode), yylineno); }
-#line 1657 "aritmetic.tab.c"
+                                      { (yyval.expressionNode) = ExpressionNode_create_operation(OPERATION_DIV, (yyvsp[-2].expressionNode), (yyvsp[0].expressionNode), yylineno); }
+#line 1540 "build/aritmetic.y.c"
     break;
 
-  case 52: /* expr: expr S_LE expr  */
+  case 54: /* expr: expr S_MUL expr  */
 #line 172 "aritmetic.y"
-                                      { (yyval.expressionNode) = ExpressionNode_create_operation(OPERATION_LE, (yyvsp[-2].expressionNode), (yyvsp[0].expressionNode), yylineno); }
-#line 1663 "aritmetic.tab.c"
+                                      { (yyval.expressionNode) = ExpressionNode_create_operation(OPERATION_MUL, (yyvsp[-2].expressionNode), (yyvsp[0].expressionNode), yylineno); }
+#line 1546 "build/aritmetic.y.c"
     break;
 
-  case 53: /* expr: expr S_GE expr  */
+  case 55: /* expr: expr S_MOD expr  */
 #line 173 "aritmetic.y"
-                                      { (yyval.expressionNode) = ExpressionNode_create_operation(OPERATION_GE, (yyvsp[-2].expressionNode), (yyvsp[0].expressionNode), yylineno); }
-#line 1669 "aritmetic.tab.c"
+                                      { (yyval.expressionNode) = ExpressionNode_create_operation(OPERATION_MOD, (yyvsp[-2].expressionNode), (yyvsp[0].expressionNode), yylineno); }
+#line 1552 "build/aritmetic.y.c"
     break;
 
-  case 54: /* expr: expr S_LT expr  */
+  case 56: /* expr: expr S_POW expr  */
 #line 174 "aritmetic.y"
-                                      { (yyval.expressionNode) = ExpressionNode_create_operation(OPERATION_LT, (yyvsp[-2].expressionNode), (yyvsp[0].expressionNode), yylineno); }
-#line 1675 "aritmetic.tab.c"
+                                      { (yyval.expressionNode) = ExpressionNode_create_operation(OPERATION_POW, (yyvsp[-2].expressionNode), (yyvsp[0].expressionNode), yylineno); }
+#line 1558 "build/aritmetic.y.c"
     break;
 
-  case 55: /* expr: expr S_GT expr  */
+  case 57: /* expr: S_MINUS expr  */
 #line 175 "aritmetic.y"
-                                      { (yyval.expressionNode) = ExpressionNode_create_operation(OPERATION_GT, (yyvsp[-2].expressionNode), (yyvsp[0].expressionNode), yylineno); }
-#line 1681 "aritmetic.tab.c"
+                                      { (yyval.expressionNode) = ExpressionNode_create_operation(OPERATION_UNARY_MINUS, (yyvsp[0].expressionNode), NULL, yylineno); }
+#line 1564 "build/aritmetic.y.c"
     break;
 
-  case 56: /* expr: expr S_AND expr  */
+  case 58: /* expr: expr S_EQ expr  */
 #line 176 "aritmetic.y"
-                                      { (yyval.expressionNode) = ExpressionNode_create_operation(OPERATION_AND, (yyvsp[-2].expressionNode), (yyvsp[0].expressionNode), yylineno); }
-#line 1687 "aritmetic.tab.c"
+                                      { (yyval.expressionNode) = ExpressionNode_create_operation(OPERATION_EQ, (yyvsp[-2].expressionNode), (yyvsp[0].expressionNode), yylineno); }
+#line 1570 "build/aritmetic.y.c"
     break;
 
-  case 57: /* expr: expr S_OR expr  */
+  case 59: /* expr: expr S_NEQ expr  */
 #line 177 "aritmetic.y"
-                                      { (yyval.expressionNode) = ExpressionNode_create_operation(OPERATION_OR, (yyvsp[-2].expressionNode), (yyvsp[0].expressionNode), yylineno); }
-#line 1693 "aritmetic.tab.c"
+                                      { (yyval.expressionNode) = ExpressionNode_create_operation(OPERATION_NEQ, (yyvsp[-2].expressionNode), (yyvsp[0].expressionNode), yylineno); }
+#line 1576 "build/aritmetic.y.c"
     break;
 
-  case 58: /* expr: S_NOT expr  */
+  case 60: /* expr: expr S_LE expr  */
 #line 178 "aritmetic.y"
-                                      { (yyval.expressionNode) = ExpressionNode_create_operation(OPERATION_NOT, (yyvsp[0].expressionNode), NULL, yylineno); }
-#line 1699 "aritmetic.tab.c"
+                                      { (yyval.expressionNode) = ExpressionNode_create_operation(OPERATION_LE, (yyvsp[-2].expressionNode), (yyvsp[0].expressionNode), yylineno); }
+#line 1582 "build/aritmetic.y.c"
     break;
 
-  case 59: /* expr: S_OBRACE expr S_CBRACE  */
+  case 61: /* expr: expr S_GE expr  */
 #line 179 "aritmetic.y"
-                                      { (yyval.expressionNode) = (yyvsp[-1].expressionNode); }
-#line 1705 "aritmetic.tab.c"
+                                      { (yyval.expressionNode) = ExpressionNode_create_operation(OPERATION_GE, (yyvsp[-2].expressionNode), (yyvsp[0].expressionNode), yylineno); }
+#line 1588 "build/aritmetic.y.c"
     break;
 
-  case 60: /* expr: S_NEW IDENTIFIER S_OBRACE args S_CBRACE  */
+  case 62: /* expr: expr S_LT expr  */
 #line 180 "aritmetic.y"
+                                      { (yyval.expressionNode) = ExpressionNode_create_operation(OPERATION_LT, (yyvsp[-2].expressionNode), (yyvsp[0].expressionNode), yylineno); }
+#line 1594 "build/aritmetic.y.c"
+    break;
+
+  case 63: /* expr: expr S_GT expr  */
+#line 181 "aritmetic.y"
+                                      { (yyval.expressionNode) = ExpressionNode_create_operation(OPERATION_GT, (yyvsp[-2].expressionNode), (yyvsp[0].expressionNode), yylineno); }
+#line 1600 "build/aritmetic.y.c"
+    break;
+
+  case 64: /* expr: expr S_AND expr  */
+#line 182 "aritmetic.y"
+                                      { (yyval.expressionNode) = ExpressionNode_create_operation(OPERATION_AND, (yyvsp[-2].expressionNode), (yyvsp[0].expressionNode), yylineno); }
+#line 1606 "build/aritmetic.y.c"
+    break;
+
+  case 65: /* expr: expr S_OR expr  */
+#line 183 "aritmetic.y"
+                                      { (yyval.expressionNode) = ExpressionNode_create_operation(OPERATION_OR, (yyvsp[-2].expressionNode), (yyvsp[0].expressionNode), yylineno); }
+#line 1612 "build/aritmetic.y.c"
+    break;
+
+  case 66: /* expr: S_NOT expr  */
+#line 184 "aritmetic.y"
+                                      { (yyval.expressionNode) = ExpressionNode_create_operation(OPERATION_NOT, (yyvsp[0].expressionNode), NULL, yylineno); }
+#line 1618 "build/aritmetic.y.c"
+    break;
+
+  case 67: /* expr: S_OBRACE expr S_CBRACE  */
+#line 185 "aritmetic.y"
+                                      { (yyval.expressionNode) = (yyvsp[-1].expressionNode); }
+#line 1624 "build/aritmetic.y.c"
+    break;
+
+  case 68: /* expr: S_NEW IDENTIFIER S_OBRACE args S_CBRACE  */
+#line 186 "aritmetic.y"
                                               { (yyval.expressionNode) = ExpressionNode_create_new((yyvsp[-3].strVal), (yyvsp[-1].argNode), yylineno); }
-#line 1711 "aritmetic.tab.c"
+#line 1630 "build/aritmetic.y.c"
     break;
 
 
-#line 1715 "aritmetic.tab.c"
+#line 1634 "build/aritmetic.y.c"
 
       default: break;
     }
@@ -1904,14 +1823,15 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 182 "aritmetic.y"
+#line 188 "aritmetic.y"
 
 
 void yyerror(const char* s) {
     fprintf(stderr, "Unrecognized characters on line %d: %s\n", yylineno, s);
+    fprintf(stderr, "Ultimul token: %d\n", yylex());
     exit(1);
 }
-
+ 
 int main(int argc, char** argv) {
     char* inputFileName = NULL;
     if (argc > 1) {

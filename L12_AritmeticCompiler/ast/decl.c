@@ -1,6 +1,7 @@
 #include "decl.h"
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
 DeclarationNode* DeclarationNode_create(
     char* identifier,
@@ -18,6 +19,7 @@ DeclarationNode* DeclarationNode_create(
 
 void DeclarationNode_free(DeclarationNode* self) {
     if (self == NULL) return;
+    printf("free DeclarationNode\n");
     free(self->identifier);
     free(self->type);
     ExpressionNode_free(self->assigned_expression);

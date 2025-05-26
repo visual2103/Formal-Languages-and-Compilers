@@ -2,12 +2,20 @@
 #include <stdlib.h>
 #include <math.h>
 
-int main() {
-	int x = (2 + 3);
-	printf("%d\n", ((3 + 4) * 5));
-	int i = (2 + 2);
-	i = 2;
-	printf("%d\n", pow(2, i));
-	printf("%d\n", (2 + 0));
-	return 0;
+typedef struct Point {
+    float x;
+} Point;
+
+Point* new_Point() {
+    Point* this = malloc(sizeof(Point));
+    return this;
 }
+
+int main() {
+    Point p1 = new_Point(0.000000, 0.000000);
+}
+
+float distance(Point a, Point b) {
+    float dx = (0.x - 0.x);
+}
+

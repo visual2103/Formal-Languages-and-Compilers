@@ -81,9 +81,9 @@ StatementNode* StatementNode_create_list(StatementNode* stmt, StatementNode* nex
 
 void StatementNode_free(StatementNode* self) {
     if (!self) return;
+    printf("free StatementNode\n ");
     switch (self->type) {
         case STMT_VAR_DECL:
-            VariableNode_free(self->as.varDecl);
             break;
         case STMT_EXPR:
             ExpressionNode_free(self->as.expr);

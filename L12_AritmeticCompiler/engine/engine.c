@@ -109,6 +109,10 @@ static void gen_expression(ExpressionNode* e, FILE* out) {
         case IMMEDIATE_STRING:
             fprintf(out, "\"%s\"", e->data.string);
             break;
+         case MEMBER_ACCESS:
+            gen_expression(e->data.member_access.object, out);
+            fprintf(out, ".%s", e->data.member_access.member);
+            break;
         case OPERATION_PLUS:
         case OPERATION_MINUS:
         case OPERATION_MUL:

@@ -1,6 +1,7 @@
 #include "class.h"
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
 ClassNode* ClassNode_create(const char* name, VariableNode* fields, FunctionNode* methods) {
     ClassNode* cls = calloc(1, sizeof(ClassNode));
@@ -23,9 +24,9 @@ ClassNode* ClassNode_create_body(FunctionNode* method, struct DeclarationNode* f
 
 void ClassNode_free(ClassNode* self) {
     if (!self) return;
+    printf("free class node\n");
     free(self->name);
-    VariableNode_free(self->fields);
-    FunctionNode_free(self->methods);
+    // Nu elibera methods aici!
     ClassNode_free(self->next);
     free(self);
 }

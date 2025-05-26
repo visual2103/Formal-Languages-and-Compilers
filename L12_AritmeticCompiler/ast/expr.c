@@ -2,6 +2,7 @@
 #include <string.h>
 #include "expr.h"
 #include "function.h"
+#include <stdio.h>
 
 ExpressionNode* ExpressionNode_create_operation(ExpressionType type, ExpressionNode* left, ExpressionNode* right, int lineno) {
     ExpressionNode* self = calloc(1, sizeof(ExpressionNode));
@@ -71,8 +72,19 @@ ExpressionNode* ExpressionNode_create_assignment(char* target, ExpressionNode* v
     return self;
 }
 
+ExpressionNode* ExpressionNode_create_member_access(ExpressionNode* object, char* member, int lineno) {
+    ExpressionNode* self = calloc(1, sizeof(ExpressionNode));
+    self->type = MEMBER_ACCESS;
+    self->data.member_access.object = object;
+    self->data.member_access.member = strdup(member);
+    self->lineno = lineno;
+    return self;
+}
+
 void ExpressionNode_free(ExpressionNode* self) {
     if (self == NULL) return;
+    printf("free expression node");
+
     switch (self->type) {
         case IMMEDIATE_IDENTIFIER:
             free(self->data.identifier);
@@ -107,7 +119,11 @@ void ExpressionNode_free(ExpressionNode* self) {
             ExpressionNode_free(self->data.operation.right);
             break;
         case FUNCTION_CALL:
-            FunctionNode_free(self->data.functionCall);
+            // FunctionNode_free(self->data.functionCall); // <- Scoate asta!
+            break;
+        case MEMBER_ACCESS:
+            ExpressionNode_free(self->data.member_access.object);
+            free(self->data.member_access.member);
             break;
         default:
             break;

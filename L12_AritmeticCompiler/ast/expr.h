@@ -24,7 +24,8 @@ typedef enum ExpressionType {
     IMMEDIATE_STRING, 
     FUNCTION_CALL,    
     NEW_OBJECT,       
-    ASSIGNMENT        
+    ASSIGNMENT,        
+    MEMBER_ACCESS
 } ExpressionType;
 
 typedef struct ExpressionNode {
@@ -48,14 +49,16 @@ typedef struct ExpressionNode {
             struct ExpressionNode* left;
             struct ExpressionNode* right;
         } operation;
+        struct {
+            struct ExpressionNode* object;
+            char* member;
+        } member_access;
     } data;
     int lineno;
     struct ExpressionNode* next;
 } ExpressionNode;
 
-/* ------------ */
-/* Constructors */
-/* ------------ */
+
 
 ExpressionNode* ExpressionNode_create_operation(ExpressionType type, ExpressionNode* left, ExpressionNode* right, int lineno);
 ExpressionNode* ExpressionNode_create_number(int evaluated_value, int lineno);
@@ -65,4 +68,5 @@ ExpressionNode* ExpressionNode_create_string(char* string, int lineno);
 ExpressionNode* ExpressionNode_create_function_call(struct FunctionNode* function, int lineno);
 ExpressionNode* ExpressionNode_create_new(char* className, struct ArgNode* args, int lineno);
 ExpressionNode* ExpressionNode_create_assignment(char* target, ExpressionNode* value, int lineno);
+ExpressionNode* ExpressionNode_create_member_access(ExpressionNode* object, char* member, int lineno);
 void ExpressionNode_free(ExpressionNode* self);

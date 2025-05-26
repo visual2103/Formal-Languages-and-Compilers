@@ -1,6 +1,7 @@
 #include "function.h"
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
 FunctionNode* FunctionNode_create(const char* name, ParamNode* params, const char* returnType, StatementNode* body, int lineno) {
     FunctionNode* fn = calloc(1, sizeof(FunctionNode));
@@ -33,11 +34,12 @@ FunctionNode* FunctionNode_create_method_call(ExpressionNode* object, const char
 
 void FunctionNode_free(FunctionNode* self) {
     if (!self) return;
+    printf("free function node\n");
     free(self->name);
     free(self->returnType);
     ParamNode_free(self->params);
     StatementNode_free(self->body);
-    ExpressionNode_free(self->object);
+    // self->object NU trebuie eliberat dacă e și în altă parte
     FunctionNode_free(self->next);
     free(self);
 }

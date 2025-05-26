@@ -2,6 +2,9 @@
 #include "../engine/engine.h"
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
+
+
 
 AST* AST_create() {
     AST* ast = calloc(1, sizeof(AST));
@@ -63,6 +66,7 @@ void AST_execute(AST* self, FILE* outputFile) {
 
 void AST_free(AST* ast) {
     if (!ast) return;
+    printf("free ast \n");
     ClassNode* c = ast->classes;
     while (c) {
         ClassNode* next = c->next;
