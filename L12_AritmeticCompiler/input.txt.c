@@ -12,10 +12,10 @@ Point* new_Point() {
 }
 
 int main() {
-    Point p1 = new_Point(0.000000, 0.000000);
+    Point* p1 = new_Point(0.000000, 0.000000);
 }
 
 float distance(Point a, Point b) {
-    float dx = (0.x - 0.x);
+    float dx = (a.x - b.x);
 }
 

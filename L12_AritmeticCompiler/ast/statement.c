@@ -114,7 +114,7 @@ void StatementNode_free(StatementNode* self) {
             StatementNode_free(self->as.listStmt);
             break;
     }
-    StatementNode_free(self->next);
+    //StatementNode_free(self->next);
     free(self);
 }
 

@@ -1,15 +1,17 @@
 #pragma once
 #include "param.h"
 #include "statement.h"
+#include "arg.h"
 
 typedef struct FunctionNode {
     char* name;
-    ParamNode* params;
+    ParamNode* params; // For function parameters (declarations)
+    ArgNode* args;     // For function call arguments
     char* returnType;
     StatementNode* body;
-    ExpressionNode* object; // apel de metode
-    int isCall;             // 1 = apel de func
-    int isMethodCall;       // 1 = apel de metoda
+    ExpressionNode* object; // For method calls
+    int isCall;
+    int isMethodCall;
     int lineno;
     struct FunctionNode* next;
 } FunctionNode;

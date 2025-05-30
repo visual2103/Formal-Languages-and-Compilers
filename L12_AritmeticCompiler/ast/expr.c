@@ -118,8 +118,10 @@ void ExpressionNode_free(ExpressionNode* self) {
             ExpressionNode_free(self->data.operation.left);
             ExpressionNode_free(self->data.operation.right);
             break;
-        case FUNCTION_CALL:
-            // FunctionNode_free(self->data.functionCall); // <- Scoate asta!
+            case FUNCTION_CALL:
+            if (self->data.functionCall && self->data.functionCall->isCall) {
+                FunctionNode_free(self->data.functionCall);
+            }
             break;
         case MEMBER_ACCESS:
             ExpressionNode_free(self->data.member_access.object);
@@ -128,6 +130,6 @@ void ExpressionNode_free(ExpressionNode* self) {
         default:
             break;
     }
-    ExpressionNode_free(self->next);
+    //ExpressionNode_free(self->next);
     free(self);
 }

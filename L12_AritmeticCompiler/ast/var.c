@@ -19,6 +19,6 @@ void VariableNode_free(VariableNode* self) {
     free(self->identifier);
     free(self->type);
     ExpressionNode_free(self->assigned_expression);
-    VariableNode_free(self->next);
+    //VariableNode_free(self->next);
     free(self);
 }

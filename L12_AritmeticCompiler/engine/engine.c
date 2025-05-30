@@ -8,6 +8,7 @@
 #include "../ast/statement.h"
 #include "../ast/function.h"
 #include "../ast/class.h"
+#include "stdbool.h"
 
 static char wasDeclared[52] = {0}; // track pentru identificatori A–Z, a–z
 
@@ -195,22 +196,39 @@ static void gen_expression(ExpressionNode* e, FILE* out) {
     }
 }
 
+
 // -----------------------------------------------------------------------------
 // VariableNode -> C
 static void gen_variable(VariableNode* v, FILE* out) {
     if (!v) return;
-    fprintf(out, "    %s %s", v->type ? v->type : "int", v->identifier);
+
+    // 1. Detectează dacă e apel la constructor → pointer
+    bool isObject = v->assigned_expression
+                 && v->assigned_expression->type == NEW_OBJECT;
+
+    // 2. Emită „Tip* nume” dacă e obiect, altfel „Tip nume”
+    fprintf(out,
+        "    %s%s %s",
+        v->type ? v->type : "int",
+        isObject ? "*" : "",
+        v->identifier
+    );
+
+    // 3. Inițializare, dacă există
     if (v->assigned_expression) {
         fprintf(out, " = ");
         gen_expression(v->assigned_expression, out);
     }
     fprintf(out, ";\n");
-    if (strlen(v->identifier) == 1) {
-        char id = v->identifier[0];
-        int idx = (id >= 'a' ? id - 'a' + 26 : id - 'A');
-        wasDeclared[idx] = 1;
+
+    // 4. Marchează variabila locală ca declarată
+    {
+      char id  = v->identifier[0];
+      int  idx = (id >= 'a' ? id - 'a' + 26 : id - 'A');
+      wasDeclared[idx] = 1;
     }
 }
+
 
 // -----------------------------------------------------------------------------
 // StatementNode -> C
@@ -284,20 +302,42 @@ static void gen_statement(StatementNode* s, FILE* out) {
     }
 }
 
+
 // -----------------------------------------------------------------------------
 // FunctionNode -> C
 static void gen_function(FunctionNode* f, FILE* out) {
     if (!f) return;
-    fprintf(out, "%s %s(", f->returnType ? f->returnType : "void", f->name);
+
+    // 1. Semnătura
+    fprintf(out, "%s %s(",
+        f->returnType ? f->returnType : "void",
+        f->name
+    );
     for (ParamNode* p = f->params; p; p = p->next) {
-        fprintf(out, "%s %s", p->type ? p->type : "int", p->name);
+        fprintf(out, "%s %s",
+            p->type ? p->type : "int",
+            p->name
+        );
         if (p->next) fprintf(out, ", ");
     }
     fprintf(out, ") {\n");
-    for (StatementNode* s = f->body; s; s = s->next)
+
+    // 2. Marchează TOȚI parametrii ca declarați
+    for (ParamNode* p = f->params; p; p = p->next) {
+        char id  = p->name[0];
+        int  idx = (id >= 'a' ? id - 'a' + 26 : id - 'A');
+        wasDeclared[idx] = 1;
+    }
+
+    // 3. Corpul funcției
+    for (StatementNode* s = f->body; s; s = s->next) {
         gen_statement(s, out);
+    }
     fprintf(out, "}\n\n");
 }
+
+
+
 
 // -----------------------------------------------------------------------------
 // ClassNode -> C

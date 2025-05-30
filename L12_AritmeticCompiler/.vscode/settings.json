@@ -5,6 +5,8 @@
         "decl.h": "c",
         "var.h": "c",
         "function.h": "c",
-        "rG.C": "cpp"
+        "rG.C": "cpp",
+        "string.h": "c",
+        "stdlib.h": "c"
     }
 }

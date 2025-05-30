@@ -7,39 +7,47 @@ FunctionNode* FunctionNode_create(const char* name, ParamNode* params, const cha
     FunctionNode* fn = calloc(1, sizeof(FunctionNode));
     fn->name = strdup(name);
     fn->params = params;
+    fn->args = NULL; // Explicitly set to NULL
     fn->returnType = returnType ? strdup(returnType) : NULL;
     fn->body = body;
     fn->lineno = lineno;
     return fn;
 }
 
-FunctionNode* FunctionNode_create_call(const char* name, struct ArgNode* args, int lineno) {
+FunctionNode* FunctionNode_create_call(const char* name, ArgNode* args, int lineno) {
     FunctionNode* fn = calloc(1, sizeof(FunctionNode));
     fn->name = strdup(name);
-    fn->params = (ParamNode*)args; // Reutilizăm câmpul params pentru args
-    fn->isCall = 1; // Adaugă câmp isCall în struct dacă e necesar
+    fn->params = NULL; // Explicitly set to NULL
+    fn->args = args;
+    fn->isCall = 1;
     fn->lineno = lineno;
     return fn;
 }
 
-FunctionNode* FunctionNode_create_method_call(ExpressionNode* object, const char* methodName, struct ArgNode* args, int lineno) {
+FunctionNode* FunctionNode_create_method_call(ExpressionNode* object, const char* methodName, ArgNode* args, int lineno) {
     FunctionNode* fn = calloc(1, sizeof(FunctionNode));
     fn->name = strdup(methodName);
-    fn->params = (ParamNode*)args; // Reutilizăm câmpul params pentru args
-    fn->object = object; // Adaugă câmp object în struct dacă e necesar
-    fn->isMethodCall = 1; // Adaugă câmp isMethodCall dacă e necesar
+    fn->params = NULL; // Explicitly set to NULL
+    fn->args = args;
+    fn->object = object;
+    fn->isMethodCall = 1;
     fn->lineno = lineno;
     return fn;
 }
 
 void FunctionNode_free(FunctionNode* self) {
     if (!self) return;
-    printf("free function node\n");
+    printf("free function node %p (isCall=%d, isMethodCall=%d)\n", (void*)self, self->isCall, self->isMethodCall);
     free(self->name);
     free(self->returnType);
-    ParamNode_free(self->params);
-    StatementNode_free(self->body);
-    // self->object NU trebuie eliberat dacă e și în altă parte
-    FunctionNode_free(self->next);
+    if (self->isCall || self->isMethodCall) {
+        printf("freeing args %p\n", (void*)self->args);
+        ArgNode_free(self->args);
+    } else {
+        printf("freeing params %p\n", (void*)self->params);
+        ParamNode_free(self->params);
+        StatementNode_free(self->body);
+    }
+    //FunctionNode_free(self->next);
     free(self);
 }

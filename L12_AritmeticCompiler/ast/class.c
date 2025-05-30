@@ -26,7 +26,6 @@ void ClassNode_free(ClassNode* self) {
     if (!self) return;
     printf("free class node\n");
     free(self->name);
-    // Nu elibera methods aici!
-    ClassNode_free(self->next);
+   //ClassNode_free(self->next);
     free(self);
 }
