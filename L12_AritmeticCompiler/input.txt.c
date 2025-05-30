@@ -31,22 +31,22 @@ int main() {
     Point* p1 = new_Point(0.000000, 0.000000);
     Point* p2 = new_Point(3.000000, 4.000000);
     float d = distance(p1, p2);
-    printf("Distance: %f\n", d);
+    printf("Distance: %d\n", d);
     if ((d > 5.000000)) {
-    printf(""Far apart"\n");
+    printf("Far apart\n");
     } else {
-    printf(""Close enough"\n");
+    printf("Close enough\n");
     }
     int steps = 0;
     while ((distance(p1, p2) > 1.000000)) {
-    move(0.500000, 0.500000);
+    Point_move(p1, 0.500000, 0.500000);
     steps = (steps + 1);
     }
-    printf("Reached in %f steps\n", steps);
+    printf("Reached in %d steps\n", steps);
     return 0;
 }
 
-float distance(Point a, Point b) {
+float distance(Point* a, Point* b) {
     float dx = (a.x - b.x);
     float dy = (a.y - b.y);
     return sqrt(((dx * dx) + (dy * dy)));
