@@ -79,9 +79,10 @@ top_item:
     | statement
     ;
 
+
 statements:
     /* empty */  { $$ = NULL; }
-    | statement statements { /* ... */ }
+    | statement statements { $1->next = $2; $$ = $1; }
     | S_NEWLINE statements { $$ = $2; }
     ;
 

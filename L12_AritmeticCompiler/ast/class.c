@@ -11,14 +11,31 @@ ClassNode* ClassNode_create(const char* name, VariableNode* fields, FunctionNode
     return cls;
 }
 
-ClassNode* ClassNode_create_body(FunctionNode* method, struct DeclarationNode* fieldDecl, ClassNode* next, int lineno) {
+ClassNode* ClassNode_create_body(FunctionNode* method, DeclarationNode* fieldDecl, ClassNode* next, int lineno) {
     ClassNode* cls = calloc(1, sizeof(ClassNode));
-    if (fieldDecl) {
-        cls->fields = VariableNode_create(fieldDecl->identifier, fieldDecl->type, fieldDecl->assigned_expression, lineno);
-    }
-    cls->methods = method;
-    cls->next = next;
     cls->lineno = lineno;
+    cls->methods = method;
+
+    if (fieldDecl) {
+        VariableNode* var = VariableNode_create(fieldDecl->identifier, fieldDecl->type, fieldDecl->assigned_expression, lineno);
+        if (next && next->fields) {
+            var->next = next->fields;
+        }
+        cls->fields = var;
+    } else if (next) {
+        cls->fields = next->fields;
+    }
+
+    if (next && next->methods) {
+        if (cls->methods) {
+            FunctionNode* last = cls->methods;
+            while (last->next) last = last->next;
+            last->next = next->methods;
+        } else {
+            cls->methods = next->methods;
+        }
+    }
+
     return cls;
 }
 

@@ -563,13 +563,13 @@ static const yytype_int8 yytranslate[] =
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    67,    67,    70,    72,    73,    77,    78,    79,    83,
-      84,    85,    89,    94,    95,    96,    97,    98,    99,   103,
-     105,   107,   112,   113,   117,   122,   123,   127,   128,   129,
-     130,   131,   132,   136,   140,   141,   146,   147,   149,   154,
-     155,   156,   160,   161,   162,   163,   164,   165,   166,   167,
-     168,   169,   170,   171,   172,   173,   174,   175,   176,   177,
-     178,   179,   180,   181,   182,   183,   184,   185,   186
+       0,    67,    67,    70,    72,    73,    77,    78,    79,    84,
+      85,    86,    90,    95,    96,    97,    98,    99,   100,   104,
+     106,   108,   113,   114,   118,   123,   124,   128,   129,   130,
+     131,   132,   133,   137,   141,   142,   147,   148,   150,   155,
+     156,   157,   161,   162,   163,   164,   165,   166,   167,   168,
+     169,   170,   171,   172,   173,   174,   175,   176,   177,   178,
+     179,   180,   181,   182,   183,   184,   185,   186,   187
 };
 #endif
 
@@ -1266,25 +1266,25 @@ yyreduce:
     break;
 
   case 9: /* statements: %empty  */
-#line 83 "aritmetic.y"
+#line 84 "aritmetic.y"
                  { (yyval.statementNode) = NULL; }
 #line 1272 "build/aritmetic.y.c"
     break;
 
   case 10: /* statements: statement statements  */
-#line 84 "aritmetic.y"
-                           { /* ... */ }
+#line 85 "aritmetic.y"
+                           { (yyvsp[-1].statementNode)->next = (yyvsp[0].statementNode); (yyval.statementNode) = (yyvsp[-1].statementNode); }
 #line 1278 "build/aritmetic.y.c"
     break;
 
   case 11: /* statements: S_NEWLINE statements  */
-#line 85 "aritmetic.y"
+#line 86 "aritmetic.y"
                            { (yyval.statementNode) = (yyvsp[0].statementNode); }
 #line 1284 "build/aritmetic.y.c"
     break;
 
   case 12: /* statement: declaration S_SEMICOLON  */
-#line 89 "aritmetic.y"
+#line 90 "aritmetic.y"
                             { 
         VariableNode* var = VariableNode_create((yyvsp[-1].declarationNode)->identifier, (yyvsp[-1].declarationNode)->type, (yyvsp[-1].declarationNode)->assigned_expression, yylineno); 
         (yyval.statementNode) = StatementNode_create_var(var); 
@@ -1294,337 +1294,337 @@ yyreduce:
     break;
 
   case 13: /* statement: expr S_SEMICOLON  */
-#line 94 "aritmetic.y"
+#line 95 "aritmetic.y"
                                        { (yyval.statementNode) = StatementNode_create_expr((yyvsp[-1].expressionNode)); }
 #line 1300 "build/aritmetic.y.c"
     break;
 
   case 14: /* statement: IDENTIFIER S_EQUALS expr S_SEMICOLON  */
-#line 95 "aritmetic.y"
+#line 96 "aritmetic.y"
                                              { (yyval.statementNode) = StatementNode_create_assign(ExpressionNode_create_identifier((yyvsp[-3].strVal), yylineno), (yyvsp[-1].expressionNode)); }
 #line 1306 "build/aritmetic.y.c"
     break;
 
   case 15: /* statement: S_IF S_OBRACE expr S_CBRACE S_LBRACE statements S_RBRACE  */
-#line 96 "aritmetic.y"
+#line 97 "aritmetic.y"
                                                                { (yyval.statementNode) = StatementNode_create_if((yyvsp[-4].expressionNode), (yyvsp[-1].statementNode), NULL); }
 #line 1312 "build/aritmetic.y.c"
     break;
 
   case 16: /* statement: S_IF S_OBRACE expr S_CBRACE S_LBRACE statements S_RBRACE S_ELSE S_LBRACE statements S_RBRACE  */
-#line 97 "aritmetic.y"
+#line 98 "aritmetic.y"
                                                                                                    { (yyval.statementNode) = StatementNode_create_if((yyvsp[-8].expressionNode), (yyvsp[-5].statementNode), (yyvsp[-1].statementNode)); }
 #line 1318 "build/aritmetic.y.c"
     break;
 
   case 17: /* statement: S_WHILE S_OBRACE expr S_CBRACE S_LBRACE statements S_RBRACE  */
-#line 98 "aritmetic.y"
+#line 99 "aritmetic.y"
                                                                   { (yyval.statementNode) = StatementNode_create_while((yyvsp[-4].expressionNode), (yyvsp[-1].statementNode)); }
 #line 1324 "build/aritmetic.y.c"
     break;
 
   case 18: /* statement: S_RETURN expr S_SEMICOLON  */
-#line 99 "aritmetic.y"
+#line 100 "aritmetic.y"
                                        { (yyval.statementNode) = StatementNode_create_return((yyvsp[-1].expressionNode)); }
 #line 1330 "build/aritmetic.y.c"
     break;
 
   case 19: /* declaration: S_VAR IDENTIFIER S_COLON type S_EQUALS expr  */
-#line 104 "aritmetic.y"
+#line 105 "aritmetic.y"
         { (yyval.declarationNode) = DeclarationNode_create((yyvsp[-4].strVal), (yyvsp[-2].strVal), (yyvsp[0].expressionNode), yylineno); }
 #line 1336 "build/aritmetic.y.c"
     break;
 
   case 20: /* declaration: S_VAR IDENTIFIER S_EQUALS expr  */
-#line 106 "aritmetic.y"
+#line 107 "aritmetic.y"
         { (yyval.declarationNode) = DeclarationNode_create((yyvsp[-2].strVal), NULL, (yyvsp[0].expressionNode), yylineno); }
 #line 1342 "build/aritmetic.y.c"
     break;
 
   case 21: /* declaration: S_VAR IDENTIFIER S_COLON type  */
-#line 108 "aritmetic.y"
+#line 109 "aritmetic.y"
         { (yyval.declarationNode) = DeclarationNode_create((yyvsp[-2].strVal), (yyvsp[0].strVal), NULL, yylineno); }
 #line 1348 "build/aritmetic.y.c"
     break;
 
   case 22: /* type: IDENTIFIER  */
-#line 112 "aritmetic.y"
+#line 113 "aritmetic.y"
                         { (yyval.strVal) = (yyvsp[0].strVal); }
 #line 1354 "build/aritmetic.y.c"
     break;
 
   case 23: /* type: S_FLOAT_TYPE  */
-#line 113 "aritmetic.y"
+#line 114 "aritmetic.y"
                         { (yyval.strVal) = strdup("float"); }
 #line 1360 "build/aritmetic.y.c"
     break;
 
   case 24: /* class: S_CLASS IDENTIFIER S_LBRACE class_body S_RBRACE  */
-#line 118 "aritmetic.y"
+#line 119 "aritmetic.y"
         { (yyval.classNode) = ClassNode_create((yyvsp[-3].strVal), (yyvsp[-1].classNode) ? (yyvsp[-1].classNode)->fields : NULL, (yyvsp[-1].classNode) ? (yyvsp[-1].classNode)->methods : NULL); }
 #line 1366 "build/aritmetic.y.c"
     break;
 
   case 25: /* class_body: %empty  */
-#line 122 "aritmetic.y"
+#line 123 "aritmetic.y"
                                       { (yyval.classNode) = NULL; }
 #line 1372 "build/aritmetic.y.c"
     break;
 
   case 26: /* class_body: class_member_list  */
-#line 123 "aritmetic.y"
+#line 124 "aritmetic.y"
                                       { (yyval.classNode) = (yyvsp[0].classNode); }
 #line 1378 "build/aritmetic.y.c"
     break;
 
   case 27: /* class_member_list: S_NEWLINE class_member_list  */
-#line 127 "aritmetic.y"
+#line 128 "aritmetic.y"
                                       { (yyval.classNode) = (yyvsp[0].classNode); }
 #line 1384 "build/aritmetic.y.c"
     break;
 
   case 28: /* class_member_list: class_member class_member_list  */
-#line 128 "aritmetic.y"
+#line 129 "aritmetic.y"
                                       { (yyval.classNode) = ClassNode_create_body(NULL, (yyvsp[-1].declarationNode), (yyvsp[0].classNode), yylineno); }
 #line 1390 "build/aritmetic.y.c"
     break;
 
   case 29: /* class_member_list: function class_member_list  */
-#line 129 "aritmetic.y"
+#line 130 "aritmetic.y"
                                       { (yyval.classNode) = ClassNode_create_body((yyvsp[-1].functionNode), NULL, (yyvsp[0].classNode), yylineno); }
 #line 1396 "build/aritmetic.y.c"
     break;
 
   case 30: /* class_member_list: S_NEWLINE  */
-#line 130 "aritmetic.y"
+#line 131 "aritmetic.y"
                                       { (yyval.classNode) = NULL; }
 #line 1402 "build/aritmetic.y.c"
     break;
 
   case 31: /* class_member_list: class_member  */
-#line 131 "aritmetic.y"
+#line 132 "aritmetic.y"
                                       { (yyval.classNode) = ClassNode_create_body(NULL, (yyvsp[0].declarationNode), NULL, yylineno); }
 #line 1408 "build/aritmetic.y.c"
     break;
 
   case 32: /* class_member_list: function  */
-#line 132 "aritmetic.y"
+#line 133 "aritmetic.y"
                                       { (yyval.classNode) = ClassNode_create_body((yyvsp[0].functionNode), NULL, NULL, yylineno); }
 #line 1414 "build/aritmetic.y.c"
     break;
 
   case 33: /* class_member: declaration S_SEMICOLON  */
-#line 136 "aritmetic.y"
+#line 137 "aritmetic.y"
                                       { (yyval.declarationNode) = (yyvsp[-1].declarationNode); }
 #line 1420 "build/aritmetic.y.c"
     break;
 
   case 34: /* function: S_FUNC IDENTIFIER S_OBRACE params S_CBRACE S_ARROW type S_LBRACE statements S_RBRACE  */
-#line 140 "aritmetic.y"
+#line 141 "aritmetic.y"
                                                                                           { (yyval.functionNode) = FunctionNode_create((yyvsp[-8].strVal), (yyvsp[-6].paramNode), (yyvsp[-3].strVal), (yyvsp[-1].statementNode), yylineno); }
 #line 1426 "build/aritmetic.y.c"
     break;
 
   case 35: /* function: S_FUNC IDENTIFIER S_OBRACE params S_CBRACE S_LBRACE statements S_RBRACE  */
-#line 141 "aritmetic.y"
+#line 142 "aritmetic.y"
                                                                                { (yyval.functionNode) = FunctionNode_create((yyvsp[-6].strVal), (yyvsp[-4].paramNode), NULL, (yyvsp[-1].statementNode), yylineno); }
 #line 1432 "build/aritmetic.y.c"
     break;
 
   case 36: /* params: %empty  */
-#line 146 "aritmetic.y"
+#line 147 "aritmetic.y"
         { (yyval.paramNode) = NULL; }
 #line 1438 "build/aritmetic.y.c"
     break;
 
   case 37: /* params: IDENTIFIER S_COLON type  */
-#line 148 "aritmetic.y"
+#line 149 "aritmetic.y"
         { (yyval.paramNode) = ParamNode_create((yyvsp[-2].strVal), (yyvsp[0].strVal), NULL, yylineno); }
 #line 1444 "build/aritmetic.y.c"
     break;
 
   case 38: /* params: IDENTIFIER S_COLON type S_COMMA params  */
-#line 150 "aritmetic.y"
+#line 151 "aritmetic.y"
         { (yyval.paramNode) = ParamNode_create((yyvsp[-4].strVal), (yyvsp[-2].strVal), (yyvsp[0].paramNode), yylineno); }
 #line 1450 "build/aritmetic.y.c"
     break;
 
   case 39: /* args: %empty  */
-#line 154 "aritmetic.y"
+#line 155 "aritmetic.y"
                                        { (yyval.argNode) = NULL; }
 #line 1456 "build/aritmetic.y.c"
     break;
 
   case 40: /* args: expr  */
-#line 155 "aritmetic.y"
+#line 156 "aritmetic.y"
                                        { (yyval.argNode) = ArgNode_create((yyvsp[0].expressionNode), NULL, yylineno); }
 #line 1462 "build/aritmetic.y.c"
     break;
 
   case 41: /* args: expr S_COMMA args  */
-#line 156 "aritmetic.y"
+#line 157 "aritmetic.y"
                                        { (yyval.argNode) = ArgNode_create((yyvsp[-2].expressionNode), (yyvsp[0].argNode), yylineno); }
 #line 1468 "build/aritmetic.y.c"
     break;
 
   case 42: /* expr: NUMBER  */
-#line 160 "aritmetic.y"
+#line 161 "aritmetic.y"
                                       { (yyval.expressionNode) = ExpressionNode_create_number((yyvsp[0].integer), yylineno); }
 #line 1474 "build/aritmetic.y.c"
     break;
 
   case 43: /* expr: FLOAT  */
-#line 161 "aritmetic.y"
+#line 162 "aritmetic.y"
                                       { (yyval.expressionNode) = ExpressionNode_create_float((yyvsp[0].floatVal), yylineno); }
 #line 1480 "build/aritmetic.y.c"
     break;
 
   case 44: /* expr: IDENTIFIER  */
-#line 162 "aritmetic.y"
+#line 163 "aritmetic.y"
                                       { (yyval.expressionNode) = ExpressionNode_create_identifier((yyvsp[0].strVal), yylineno); }
 #line 1486 "build/aritmetic.y.c"
     break;
 
   case 45: /* expr: STRING  */
-#line 163 "aritmetic.y"
+#line 164 "aritmetic.y"
                                       { (yyval.expressionNode) = ExpressionNode_create_string((yyvsp[0].strVal), yylineno); }
 #line 1492 "build/aritmetic.y.c"
     break;
 
   case 46: /* expr: S_SQRT S_OBRACE args S_CBRACE  */
-#line 164 "aritmetic.y"
+#line 165 "aritmetic.y"
                                       { (yyval.expressionNode) = ExpressionNode_create_function_call(FunctionNode_create_call("sqrt", (yyvsp[-1].argNode), yylineno), yylineno); }
 #line 1498 "build/aritmetic.y.c"
     break;
 
   case 47: /* expr: S_PRINTLN S_OBRACE args S_CBRACE  */
-#line 165 "aritmetic.y"
+#line 166 "aritmetic.y"
                                           { (yyval.expressionNode) = ExpressionNode_create_function_call(FunctionNode_create_call("println", (yyvsp[-1].argNode), yylineno), yylineno); }
 #line 1504 "build/aritmetic.y.c"
     break;
 
   case 48: /* expr: IDENTIFIER S_OBRACE args S_CBRACE  */
-#line 166 "aritmetic.y"
+#line 167 "aritmetic.y"
                                         { (yyval.expressionNode) = ExpressionNode_create_function_call(FunctionNode_create_call((yyvsp[-3].strVal), (yyvsp[-1].argNode), yylineno), yylineno); }
 #line 1510 "build/aritmetic.y.c"
     break;
 
   case 49: /* expr: expr S_DOT IDENTIFIER S_OBRACE args S_CBRACE  */
-#line 167 "aritmetic.y"
+#line 168 "aritmetic.y"
                                                    { (yyval.expressionNode) = ExpressionNode_create_function_call(FunctionNode_create_method_call((yyvsp[-5].expressionNode), (yyvsp[-3].strVal), (yyvsp[-1].argNode), yylineno), yylineno); }
 #line 1516 "build/aritmetic.y.c"
     break;
 
   case 50: /* expr: expr S_DOT IDENTIFIER  */
-#line 168 "aritmetic.y"
+#line 169 "aritmetic.y"
                                       { (yyval.expressionNode) = ExpressionNode_create_member_access((yyvsp[-2].expressionNode), (yyvsp[0].strVal), yylineno); }
 #line 1522 "build/aritmetic.y.c"
     break;
 
   case 51: /* expr: expr S_PLUS expr  */
-#line 169 "aritmetic.y"
+#line 170 "aritmetic.y"
                                       { (yyval.expressionNode) = ExpressionNode_create_operation(OPERATION_PLUS, (yyvsp[-2].expressionNode), (yyvsp[0].expressionNode), yylineno); }
 #line 1528 "build/aritmetic.y.c"
     break;
 
   case 52: /* expr: expr S_MINUS expr  */
-#line 170 "aritmetic.y"
+#line 171 "aritmetic.y"
                                       { (yyval.expressionNode) = ExpressionNode_create_operation(OPERATION_MINUS, (yyvsp[-2].expressionNode), (yyvsp[0].expressionNode), yylineno); }
 #line 1534 "build/aritmetic.y.c"
     break;
 
   case 53: /* expr: expr S_DIV expr  */
-#line 171 "aritmetic.y"
+#line 172 "aritmetic.y"
                                       { (yyval.expressionNode) = ExpressionNode_create_operation(OPERATION_DIV, (yyvsp[-2].expressionNode), (yyvsp[0].expressionNode), yylineno); }
 #line 1540 "build/aritmetic.y.c"
     break;
 
   case 54: /* expr: expr S_MUL expr  */
-#line 172 "aritmetic.y"
+#line 173 "aritmetic.y"
                                       { (yyval.expressionNode) = ExpressionNode_create_operation(OPERATION_MUL, (yyvsp[-2].expressionNode), (yyvsp[0].expressionNode), yylineno); }
 #line 1546 "build/aritmetic.y.c"
     break;
 
   case 55: /* expr: expr S_MOD expr  */
-#line 173 "aritmetic.y"
+#line 174 "aritmetic.y"
                                       { (yyval.expressionNode) = ExpressionNode_create_operation(OPERATION_MOD, (yyvsp[-2].expressionNode), (yyvsp[0].expressionNode), yylineno); }
 #line 1552 "build/aritmetic.y.c"
     break;
 
   case 56: /* expr: expr S_POW expr  */
-#line 174 "aritmetic.y"
+#line 175 "aritmetic.y"
                                       { (yyval.expressionNode) = ExpressionNode_create_operation(OPERATION_POW, (yyvsp[-2].expressionNode), (yyvsp[0].expressionNode), yylineno); }
 #line 1558 "build/aritmetic.y.c"
     break;
 
   case 57: /* expr: S_MINUS expr  */
-#line 175 "aritmetic.y"
+#line 176 "aritmetic.y"
                                       { (yyval.expressionNode) = ExpressionNode_create_operation(OPERATION_UNARY_MINUS, (yyvsp[0].expressionNode), NULL, yylineno); }
 #line 1564 "build/aritmetic.y.c"
     break;
 
   case 58: /* expr: expr S_EQ expr  */
-#line 176 "aritmetic.y"
+#line 177 "aritmetic.y"
                                       { (yyval.expressionNode) = ExpressionNode_create_operation(OPERATION_EQ, (yyvsp[-2].expressionNode), (yyvsp[0].expressionNode), yylineno); }
 #line 1570 "build/aritmetic.y.c"
     break;
 
   case 59: /* expr: expr S_NEQ expr  */
-#line 177 "aritmetic.y"
+#line 178 "aritmetic.y"
                                       { (yyval.expressionNode) = ExpressionNode_create_operation(OPERATION_NEQ, (yyvsp[-2].expressionNode), (yyvsp[0].expressionNode), yylineno); }
 #line 1576 "build/aritmetic.y.c"
     break;
 
   case 60: /* expr: expr S_LE expr  */
-#line 178 "aritmetic.y"
+#line 179 "aritmetic.y"
                                       { (yyval.expressionNode) = ExpressionNode_create_operation(OPERATION_LE, (yyvsp[-2].expressionNode), (yyvsp[0].expressionNode), yylineno); }
 #line 1582 "build/aritmetic.y.c"
     break;
 
   case 61: /* expr: expr S_GE expr  */
-#line 179 "aritmetic.y"
+#line 180 "aritmetic.y"
                                       { (yyval.expressionNode) = ExpressionNode_create_operation(OPERATION_GE, (yyvsp[-2].expressionNode), (yyvsp[0].expressionNode), yylineno); }
 #line 1588 "build/aritmetic.y.c"
     break;
 
   case 62: /* expr: expr S_LT expr  */
-#line 180 "aritmetic.y"
+#line 181 "aritmetic.y"
                                       { (yyval.expressionNode) = ExpressionNode_create_operation(OPERATION_LT, (yyvsp[-2].expressionNode), (yyvsp[0].expressionNode), yylineno); }
 #line 1594 "build/aritmetic.y.c"
     break;
 
   case 63: /* expr: expr S_GT expr  */
-#line 181 "aritmetic.y"
+#line 182 "aritmetic.y"
                                       { (yyval.expressionNode) = ExpressionNode_create_operation(OPERATION_GT, (yyvsp[-2].expressionNode), (yyvsp[0].expressionNode), yylineno); }
 #line 1600 "build/aritmetic.y.c"
     break;
 
   case 64: /* expr: expr S_AND expr  */
-#line 182 "aritmetic.y"
+#line 183 "aritmetic.y"
                                       { (yyval.expressionNode) = ExpressionNode_create_operation(OPERATION_AND, (yyvsp[-2].expressionNode), (yyvsp[0].expressionNode), yylineno); }
 #line 1606 "build/aritmetic.y.c"
     break;
 
   case 65: /* expr: expr S_OR expr  */
-#line 183 "aritmetic.y"
+#line 184 "aritmetic.y"
                                       { (yyval.expressionNode) = ExpressionNode_create_operation(OPERATION_OR, (yyvsp[-2].expressionNode), (yyvsp[0].expressionNode), yylineno); }
 #line 1612 "build/aritmetic.y.c"
     break;
 
   case 66: /* expr: S_NOT expr  */
-#line 184 "aritmetic.y"
+#line 185 "aritmetic.y"
                                       { (yyval.expressionNode) = ExpressionNode_create_operation(OPERATION_NOT, (yyvsp[0].expressionNode), NULL, yylineno); }
 #line 1618 "build/aritmetic.y.c"
     break;
 
   case 67: /* expr: S_OBRACE expr S_CBRACE  */
-#line 185 "aritmetic.y"
+#line 186 "aritmetic.y"
                                       { (yyval.expressionNode) = (yyvsp[-1].expressionNode); }
 #line 1624 "build/aritmetic.y.c"
     break;
 
   case 68: /* expr: S_NEW IDENTIFIER S_OBRACE args S_CBRACE  */
-#line 186 "aritmetic.y"
+#line 187 "aritmetic.y"
                                               { (yyval.expressionNode) = ExpressionNode_create_new((yyvsp[-3].strVal), (yyvsp[-1].argNode), yylineno); }
 #line 1630 "build/aritmetic.y.c"
     break;
@@ -1823,7 +1823,7 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 188 "aritmetic.y"
+#line 189 "aritmetic.y"
 
 
 void yyerror(const char* s) {

@@ -3,7 +3,6 @@
 #include "expr.h"
 #include "var.h"
 
-
 typedef enum {
     STMT_VAR_DECL,   // var x: T = expr;
     STMT_EXPR,       // expr;
@@ -11,8 +10,8 @@ typedef enum {
     STMT_WHILE,      // while (cond) { … }
     STMT_FOR,        // for (init; cond; update) { … }
     STMT_RETURN,     // return expr ;
-    STMT_ASSIGN,      // x = expr;
-    STMT_LIST
+    STMT_ASSIGN      // x = expr;
+    // FARA STMT_LIST!
 } StatementType;
 
 typedef struct StatementNode {
@@ -20,9 +19,7 @@ typedef struct StatementNode {
     struct StatementNode* next;
 
     union {
-        // variabila locala
         VariableNode*  varDecl;  
-        // expr -> (func call )
         ExpressionNode* expr;     
 
         // if 
@@ -39,7 +36,7 @@ typedef struct StatementNode {
         } whileStmt;
 
         // for 
-         struct {                                // STMT_FOR
+        struct {                                // STMT_FOR
             struct StatementNode* init;        // varDecl sau assign/expr
             ExpressionNode* cond;
             struct StatementNode* update;      // assign sau expr
@@ -54,12 +51,11 @@ typedef struct StatementNode {
             ExpressionNode* target;       // IdentExpr sau MemberExpr
             ExpressionNode* value;        // expresia din dreapta
         } assignStmt;
-        struct StatementNode* listStmt;      
     } as;
     int lineno;
 } StatementNode;
 
-// constructor
+// constructori
 StatementNode* StatementNode_create_var    (VariableNode* var);
 StatementNode* StatementNode_create_expr   (ExpressionNode* expr);
 StatementNode* StatementNode_create_if     (ExpressionNode* cond, StatementNode* thenB, StatementNode* elseB);
@@ -67,6 +63,6 @@ StatementNode* StatementNode_create_while  (ExpressionNode* cond, StatementNode*
 StatementNode* StatementNode_create_for    (StatementNode* init, ExpressionNode* cond, StatementNode* update,  StatementNode* body);
 StatementNode* StatementNode_create_return (ExpressionNode* expr);
 StatementNode* StatementNode_create_assign (ExpressionNode* target, ExpressionNode* value);
-StatementNode* StatementNode_create_list(StatementNode* stmt, StatementNode* next, int lineno);
+// FARA StatementNode_create_list!
 
 void  StatementNode_free  (StatementNode* self);

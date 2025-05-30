@@ -2,11 +2,12 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-//var x: T = expr;
+// var x: T = expr;
 StatementNode* StatementNode_create_var(VariableNode* var) {
     StatementNode* s = calloc(1, sizeof(StatementNode));
     s->type         = STMT_VAR_DECL;
     s->as.varDecl   = var;
+    s->next         = NULL;
     return s;
 }
 // expr;
@@ -14,6 +15,7 @@ StatementNode* StatementNode_create_expr(ExpressionNode* expr) {
     StatementNode* s = calloc(1, sizeof(StatementNode));
     s->type        = STMT_EXPR;
     s->as.expr     = expr;
+    s->next        = NULL;
     return s;
 }
 
@@ -30,15 +32,17 @@ StatementNode* StatementNode_create_if(ExpressionNode* cond, StatementNode* then
     s->as.ifStmt.cond = cond;
     s->as.ifStmt.thenBranch = thenB;
     s->as.ifStmt.elseBranch = elseB;
+    s->next = NULL;
     return s;
 }
 
-//  while (cond) { body }
+// while (cond) { body }
 StatementNode* StatementNode_create_while(ExpressionNode* cond, StatementNode* body) {
     StatementNode* s = calloc(1, sizeof(StatementNode));
     s->type = STMT_WHILE;
     s->as.whileStmt.cond = cond;
     s->as.whileStmt.body = body;
+    s->next = NULL;
     return s;
 }
 
@@ -50,6 +54,7 @@ StatementNode* StatementNode_create_for(StatementNode* init, ExpressionNode* con
     s->as.forStmt.cond   = cond;
     s->as.forStmt.update = update;
     s->as.forStmt.body   = body;
+    s->next = NULL;
     return s;
 }
 
@@ -58,26 +63,21 @@ StatementNode* StatementNode_create_return(ExpressionNode* expr) {
     StatementNode* s             = calloc(1, sizeof(StatementNode));
     s->type                      = STMT_RETURN;
     s->as.returnExpr             = expr;
+    s->next = NULL;
     return s;
 }
 
 // x = expr;
-StatementNode* StatementNode_create_assign(ExpressionNode* target,
-                                           ExpressionNode* value) {
+StatementNode* StatementNode_create_assign(ExpressionNode* target, ExpressionNode* value) {
     StatementNode* s               = calloc(1, sizeof(StatementNode));
     s->type                        = STMT_ASSIGN;
     s->as.assignStmt.target       = target;
     s->as.assignStmt.value        = value;
+    s->next = NULL;
     return s;
 }
-StatementNode* StatementNode_create_list(StatementNode* stmt, StatementNode* next, int lineno) {
-    StatementNode* node = calloc(1, sizeof(StatementNode));
-    node->type = STMT_LIST; 
-    node->as.listStmt = stmt;
-    node->next = next;
-    node->lineno = lineno;
-    return node;
-}
+
+// NU MAI EXISTĂ StatementNode_create_list!
 
 void StatementNode_free(StatementNode* self) {
     if (!self) return;
@@ -110,11 +110,8 @@ void StatementNode_free(StatementNode* self) {
             ExpressionNode_free(self->as.assignStmt.target);
             ExpressionNode_free(self->as.assignStmt.value);
             break;
-        case STMT_LIST:
-            StatementNode_free(self->as.listStmt);
-            break;
+        // NU mai există STMT_LIST!
     }
-    //StatementNode_free(self->next);
+    StatementNode_free(self->next);
     free(self);
 }
-
