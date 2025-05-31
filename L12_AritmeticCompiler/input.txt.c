@@ -45,16 +45,16 @@ int main() {
     Point* p1 = new_Point(0.00, 0.00);
     Point* p2 = new_Point(3.00, 4.00);
     float d = distance(p1, p2);
-    printf("Distance: %d\n", d);
+    printf("Distance: %.2f\n", d);
     if ((d > 5.00)) {
-    printf("Far apart\n");
+        printf("Far apart\n");
     } else {
-    printf("Close enough\n");
+        printf("Close enough\n");
     }
     int steps = 0;
     while ((distance(p1, p2) > 1.00)) {
-    Point_move(p1, 0.50, 0.50);
-    steps = (steps + 1);
+        Point_move(p1, 0.50, 0.50);
+        steps = (steps + 1);
     }
     printf("Reached in %d steps\n", steps);
     return 0;

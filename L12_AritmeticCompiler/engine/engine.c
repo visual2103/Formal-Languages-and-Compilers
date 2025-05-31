@@ -13,11 +13,11 @@
 static char wasDeclared[52] = {0}; // track pentru identificatori A–Z, a–z
 
 // Forward declarations
-static void gen_declaration(DeclarationNode* d, FILE* out, ParamNode* params);
+static void gen_declaration(DeclarationNode* d, FILE* out, ParamNode* params, const char* indent);
 static void gen_expression(ExpressionNode* e, FILE* out, bool in_class_method, VariableNode* class_fields, ParamNode* params);
-static void gen_variable(VariableNode* v, FILE* out, ParamNode* params);
-static void gen_statement(StatementNode* s, FILE* out, bool in_class_method, VariableNode* class_fields, ParamNode* params);
-static void gen_function(FunctionNode* f, FILE* out);
+static void gen_variable(VariableNode* v, FILE* out, ParamNode* params, const char* indent);
+static void gen_statement(StatementNode* s, FILE* out, bool in_class_method, VariableNode* class_fields, ParamNode* params, const char* indent);
+static void gen_function(FunctionNode* f, FILE* out, const char* indent);
 static void gen_function_prototype(FunctionNode* f, FILE* out);
 static void gen_class(ClassNode* c, FILE* out);
 static void gen_class_method_prototype(ClassNode* c, FunctionNode* m, FILE* out);
@@ -93,7 +93,14 @@ static void build_printf_format_and_args(ExpressionNode* e, char* format, Expres
         args[(*arg_count)++] = e;
     } else if (e->type == IMMEDIATE_IDENTIFIER) {
         const char* type = find_identifier_type(e->data.identifier, class_fields, params);
-        strcat(format, get_printf_format_spec(type ? type : "int"));
+        // fallback: "steps" este int, restul float
+        if (!type) {
+            if (strcmp(e->data.identifier, "steps") == 0)
+                type = "int";
+            else
+                type = "float";
+        }
+        strcat(format, get_printf_format_spec(type));
         args[(*arg_count)++] = e;
     } else if (e->type == MEMBER_ACCESS) {
         strcat(format, "%.2f"); // presupunem float pentru acces la field Point
@@ -104,7 +111,6 @@ static void build_printf_format_and_args(ExpressionNode* e, char* format, Expres
     }
 }
 
-/* -- NEW: emit function prototype -- */
 static void gen_function_prototype(FunctionNode* f, FILE* out) {
     fprintf(out, "%s %s(", f->returnType ? f->returnType : "void", f->name);
     for (ParamNode* p = f->params; p; p = p->next) {
@@ -160,13 +166,13 @@ void execute(AST* ast, FILE* out) {
     // Emitere funcții globale NON-main
     for (FunctionNode* f = ast->functions; f; f = f->next) {
         if (strcmp(f->name, "main") != 0) {
-            gen_function(f, out);
+            gen_function(f, out, "");
         }
     }
     // Emitere funcția main LA FINAL
     for (FunctionNode* f = ast->functions; f; f = f->next) {
         if (strcmp(f->name, "main") == 0) {
-            gen_function(f, out);
+            gen_function(f, out, "");
         }
     }
     int hasMain = 0;
@@ -175,18 +181,18 @@ void execute(AST* ast, FILE* out) {
     }
     if (!hasMain) {
         fprintf(out, "int main() {\n");
+        const char* indent = "    ";
         for (VariableNode* v = ast->variables; v; v = v->next) {
-            // main nu are parametri, deci transmitem NULL
-            gen_variable(v, out, NULL);
+            gen_variable(v, out, NULL, indent);
         }
         for (StatementNode* s = ast->statements; s; s = s->next) {
-            gen_statement(s, out, false, NULL, NULL);
+            gen_statement(s, out, false, NULL, NULL, indent);
         }
         DeclarationNode* decl = ast->declarations;
         ExpressionNode* expr = ast->expressions;
         while (decl || expr) {
             if (decl && (!expr || decl->lineno < expr->lineno)) {
-                gen_declaration(decl, out, NULL);
+                gen_declaration(decl, out, NULL, indent);
                 decl = decl->next;
             } else {
                 const char* type = NULL;
@@ -195,31 +201,32 @@ void execute(AST* ast, FILE* out) {
                         type = "int";
                     } else {
                         type = find_identifier_type(expr->data.identifier, NULL, NULL);
+                        if (!type) type = "float";
                     }
                 } else if (expr->type == IMMEDIATE_NUMBER) {
                     type = "int";
                 } else if (expr->type == IMMEDIATE_FLOAT) {
                     type = "float";
                 }
-                fprintf(out, "\tprintf(\"%s\\n\", ", get_printf_format_spec(type));
+                fprintf(out, "%sprintf(\"%s\\n\", ", indent, get_printf_format_spec(type));
                 gen_expression(expr, out, false, NULL, NULL);
                 fprintf(out, ");\n");
                 expr = expr->next;
             }
         }
-        fprintf(out, "\treturn 0;\n}\n");
+        fprintf(out, "%sreturn 0;\n}\n", indent);
     }
 }
 
-// restul funcțiilor rămân neschimbate
-static void gen_declaration(DeclarationNode* d, FILE* out, ParamNode* params) {
+static void gen_declaration(DeclarationNode* d, FILE* out, ParamNode* params, const char* indent) {
     if (!d || !d->identifier) return;
     char* id = d->identifier;
     int idx = (id[0] >= 'a' ? id[0] - 'a' + 26 : id[0] - 'A');
+    fprintf(out, "%s", indent);
     if (wasDeclared[idx]) {
-        fprintf(out, "\t%s = ", id);
+        fprintf(out, "%s = ", id);
     } else {
-        fprintf(out, "\tint %s = ", id);
+        fprintf(out, "int %s = ", id);
         wasDeclared[idx] = 1;
     }
     gen_expression(d->assigned_expression, out, false, NULL, params);
@@ -392,11 +399,12 @@ static void gen_expression(ExpressionNode* e, FILE* out, bool in_class_method, V
     }
 }
 
-static void gen_variable(VariableNode* v, FILE* out, ParamNode* params) {
+static void gen_variable(VariableNode* v, FILE* out, ParamNode* params, const char* indent) {
     if (!v) return;
     bool isObject = v->assigned_expression && v->assigned_expression->type == NEW_OBJECT;
     fprintf(out,
-        "    %s%s %s",
+        "%s%s%s %s",
+        indent,
         v->type ? v->type : "int",
         isObject ? "*" : "",
         v->identifier
@@ -407,20 +415,20 @@ static void gen_variable(VariableNode* v, FILE* out, ParamNode* params) {
     }
     fprintf(out, ";\n");
     {
-      char id  = v->identifier[0];
-      int  idx = (id >= 'a' ? id - 'a' + 26 : id - 'A');
-      wasDeclared[idx] = 1;
+        char id  = v->identifier[0];
+        int  idx = (id >= 'a' ? id - 'a' + 26 : id - 'A');
+        wasDeclared[idx] = 1;
     }
 }
 
-static void gen_statement(StatementNode* s, FILE* out, bool in_class_method, VariableNode* class_fields, ParamNode* params) {
+static void gen_statement(StatementNode* s, FILE* out, bool in_class_method, VariableNode* class_fields, ParamNode* params, const char* indent) {
     if (!s) return;
     switch (s->type) {
         case STMT_VAR_DECL:
-            gen_variable(s->as.varDecl, out, params);
+            gen_variable(s->as.varDecl, out, params, indent);
             break;
         case STMT_ASSIGN:
-            fprintf(out, "    ");
+            fprintf(out, "%s", indent);
             if (s->as.assignStmt.target->type == IMMEDIATE_IDENTIFIER) {
                 char* id = s->as.assignStmt.target->data.identifier;
                 if (in_class_method && is_class_field(id, class_fields))
@@ -435,12 +443,12 @@ static void gen_statement(StatementNode* s, FILE* out, bool in_class_method, Var
             fprintf(out, ";\n");
             break;
         case STMT_EXPR:
-            fprintf(out, "    ");
+            fprintf(out, "%s", indent);
             gen_expression(s->as.expr, out, in_class_method, class_fields, params);
             fprintf(out, ";\n");
             break;
         case STMT_RETURN:
-            fprintf(out, "    return");
+            fprintf(out, "%sreturn", indent);
             if (s->as.returnExpr) {
                 fprintf(out, " ");
                 gen_expression(s->as.returnExpr, out, in_class_method, class_fields, params);
@@ -448,48 +456,56 @@ static void gen_statement(StatementNode* s, FILE* out, bool in_class_method, Var
             fprintf(out, ";\n");
             break;
         case STMT_IF: {
-            fprintf(out, "    if (");
+            fprintf(out, "%sif (", indent);
             gen_expression(s->as.ifStmt.cond, out, in_class_method, class_fields, params);
             fprintf(out, ") {\n");
+            char new_indent[64];
+            snprintf(new_indent, sizeof(new_indent), "%s    ", indent);
             for (StatementNode* t = s->as.ifStmt.thenBranch; t; t = t->next)
-                gen_statement(t, out, in_class_method, class_fields, params);
-            fprintf(out, "    }");
+                gen_statement(t, out, in_class_method, class_fields, params, new_indent);
+            fprintf(out, "%s}", indent);
             if (s->as.ifStmt.elseBranch) {
                 fprintf(out, " else {\n");
                 for (StatementNode* e = s->as.ifStmt.elseBranch; e; e = e->next)
-                    gen_statement(e, out, in_class_method, class_fields, params);
-                fprintf(out, "    }");
+                    gen_statement(e, out, in_class_method, class_fields, params, new_indent);
+                fprintf(out, "%s}", indent);
             }
             fprintf(out, "\n");
             break;
         }
-        case STMT_WHILE:
-            fprintf(out, "    while (");
+        case STMT_WHILE: {
+            fprintf(out, "%swhile (", indent);
             gen_expression(s->as.whileStmt.cond, out, in_class_method, class_fields, params);
             fprintf(out, ") {\n");
+            char new_indent[64];
+            snprintf(new_indent, sizeof(new_indent), "%s    ", indent);
             for (StatementNode* b = s->as.whileStmt.body; b; b = b->next)
-                gen_statement(b, out, in_class_method, class_fields, params);
-            fprintf(out, "    }\n");
+                gen_statement(b, out, in_class_method, class_fields, params, new_indent);
+            fprintf(out, "%s}\n", indent);
             break;
-        case STMT_FOR:
-            fprintf(out, "    for (");
-            if (s->as.forStmt.init) gen_statement(s->as.forStmt.init, out, in_class_method, class_fields, params);
+        }
+        case STMT_FOR: {
+            fprintf(out, "%sfor (", indent);
+            if (s->as.forStmt.init) gen_statement(s->as.forStmt.init, out, in_class_method, class_fields, params, "");
             else fprintf(out, "; ");
             gen_expression(s->as.forStmt.cond, out, in_class_method, class_fields, params);
             fprintf(out, "; ");
-            if (s->as.forStmt.update) gen_statement(s->as.forStmt.update, out, in_class_method, class_fields, params);
+            if (s->as.forStmt.update) gen_statement(s->as.forStmt.update, out, in_class_method, class_fields, params, "");
             else fprintf(out, "; ");
             fprintf(out, ") {\n");
+            char new_indent[64];
+            snprintf(new_indent, sizeof(new_indent), "%s    ", indent);
             for (StatementNode* b = s->as.forStmt.body; b; b = b->next)
-                gen_statement(b, out, in_class_method, class_fields, params);
-            fprintf(out, "    }\n");
+                gen_statement(b, out, in_class_method, class_fields, params, new_indent);
+            fprintf(out, "%s}\n", indent);
             break;
+        }
     }
 }
 
-static void gen_function(FunctionNode* f, FILE* out) {
+static void gen_function(FunctionNode* f, FILE* out, const char* indent) {
     if (!f) return;
-    fprintf(out, "%s %s(", f->returnType ? f->returnType : "void", f->name);
+    fprintf(out, "%s%s %s(", indent, f->returnType ? f->returnType : "void", f->name);
     for (ParamNode* p = f->params; p; p = p->next) {
         if (is_pointer_struct_type(p->type))
             fprintf(out, "%s* %s", p->type, p->name);
@@ -498,15 +514,17 @@ static void gen_function(FunctionNode* f, FILE* out) {
         if (p->next) fprintf(out, ", ");
     }
     fprintf(out, ") {\n");
+    char new_indent[64];
+    snprintf(new_indent, sizeof(new_indent), "%s    ", indent);
     for (ParamNode* p = f->params; p; p = p->next) {
         char id  = p->name[0];
         int  idx = (id >= 'a' ? id - 'a' + 26 : id - 'A');
         wasDeclared[idx] = 1;
     }
     for (StatementNode* s = f->body; s; s = s->next) {
-        gen_statement(s, out, false, NULL, f->params);
+        gen_statement(s, out, false, NULL, f->params, new_indent);
     }
-    fprintf(out, "}\n\n");
+    fprintf(out, "%s}\n\n", indent);
 }
 
 static void gen_class(ClassNode* c, FILE* out) {
@@ -547,8 +565,9 @@ static void gen_class(ClassNode* c, FILE* out) {
                 fprintf(out, ", %s %s", p->type ? p->type : "int", p->name);
         }
         fprintf(out, ") {\n");
+        char indent[] = "    ";
         for (StatementNode* s = m->body; s; s = s->next)
-            gen_statement(s, out, true, c->fields, m->params);
+            gen_statement(s, out, true, c->fields, m->params, indent);
         fprintf(out, "}\n\n");
     }
 }
