@@ -77,7 +77,6 @@ StatementNode* StatementNode_create_assign(ExpressionNode* target, ExpressionNod
     return s;
 }
 
-// NU MAI EXISTĂ StatementNode_create_list!
 
 void StatementNode_free(StatementNode* self) {
     if (!self) return;
@@ -110,7 +109,6 @@ void StatementNode_free(StatementNode* self) {
             ExpressionNode_free(self->as.assignStmt.target);
             ExpressionNode_free(self->as.assignStmt.value);
             break;
-        // NU mai există STMT_LIST!
     }
     StatementNode_free(self->next);
     free(self);

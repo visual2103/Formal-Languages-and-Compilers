@@ -12,7 +12,7 @@
 
 static char wasDeclared[52] = {0}; // track pentru identificatori A–Z, a–z
 
-// Forward declarations
+// forward declaration
 static void gen_declaration(DeclarationNode* d, FILE* out, ParamNode* params, const char* indent);
 static void gen_expression(ExpressionNode* e, FILE* out, bool in_class_method, VariableNode* class_fields, ParamNode* params);
 static void gen_variable(VariableNode* v, FILE* out, ParamNode* params, const char* indent);
@@ -22,7 +22,7 @@ static void gen_function_prototype(FunctionNode* f, FILE* out);
 static void gen_class(ClassNode* c, FILE* out);
 static void gen_class_method_prototype(ClassNode* c, FunctionNode* m, FILE* out);
 
-// Helper: verifică dacă id este field al clasei curente
+//verific daca id este field al clasei curente
 static bool is_class_field(const char* id, VariableNode* fields) {
     for (VariableNode* f = fields; f; f = f->next) {
         if (strcmp(id, f->identifier) == 0)
@@ -31,7 +31,7 @@ static bool is_class_field(const char* id, VariableNode* fields) {
     return false;
 }
 
-// Helper: verifică dacă id este parametru al funcției curente
+//verifica daca id este parametru al functiei curente
 static bool is_param(const char* id , ParamNode* params) {
     for (ParamNode* p = params; p; p = p->next) {
         if (strcmp(p->name ,id ) == 0) return true;
@@ -39,7 +39,7 @@ static bool is_param(const char* id , ParamNode* params) {
     return false;
 }
 
-// Helper: returnează tipul unui identificator (parametru sau variabilă de clasă)
+//tipul unui identificator
 static const char* find_identifier_type(const char* id, VariableNode* class_fields, ParamNode* params) {
     for (ParamNode* p = params; p; p = p->next) {
         if (strcmp(p->name, id) == 0) {
@@ -54,8 +54,8 @@ static const char* find_identifier_type(const char* id, VariableNode* class_fiel
     return NULL;
 }
 
-// Helper: decide dacă tipul este pointer la struct (ex: Point*)
-// Acceptă orice tip care conține '*', sau este exact "Point"
+// decide daca tipul este pointer la struct 
+// orice tip care are '*', sau este exact structura
 static bool is_pointer_struct_type(const char* type) {
     if (!type) return false;
     if (strstr(type, "*") != NULL) return true;
@@ -63,7 +63,7 @@ static bool is_pointer_struct_type(const char* type) {
     return false;
 }
 
-// Helper: deduce formatul corect pentru printf pe baza tipului
+//formatul pt printf 
 static const char* get_printf_format_spec(const char* type) {
     if (!type) return "%.2f";
     if (strcmp(type, "int") == 0) return "%d";
@@ -71,7 +71,7 @@ static const char* get_printf_format_spec(const char* type) {
     return "%.2f";
 }
 
-// Helper: pentru printf cu concatenare și deducere tipuri
+// printf cu concatenare + deducere tipuri
 static void build_printf_format_and_args(ExpressionNode* e, char* format, ExpressionNode** args, int* arg_count, VariableNode* class_fields, ParamNode* params) {
     if (!e) return;
     if (e->type == OPERATION_PLUS) {
@@ -93,7 +93,6 @@ static void build_printf_format_and_args(ExpressionNode* e, char* format, Expres
         args[(*arg_count)++] = e;
     } else if (e->type == IMMEDIATE_IDENTIFIER) {
         const char* type = find_identifier_type(e->data.identifier, class_fields, params);
-        // fallback: "steps" este int, restul float
         if (!type) {
             if (strcmp(e->data.identifier, "steps") == 0)
                 type = "int";
@@ -103,7 +102,7 @@ static void build_printf_format_and_args(ExpressionNode* e, char* format, Expres
         strcat(format, get_printf_format_spec(type));
         args[(*arg_count)++] = e;
     } else if (e->type == MEMBER_ACCESS) {
-        strcat(format, "%.2f"); // presupunem float pentru acces la field Point
+        strcat(format, "%.2f"); // presupunem float pentru acces la field-ul din STRUCT 
         args[(*arg_count)++] = e;
     } else {
         strcat(format, "%.2f");
@@ -141,17 +140,17 @@ void execute(AST* ast, FILE* out) {
         "#include <stdlib.h>\n"
         "#include <math.h>\n\n"
     );
-    // Emitere forward declarations pentru structuri
+    //  forward declarations pentru structuri
     for (ClassNode* c = ast->classes; c; c = c->next) {
         fprintf(out, "typedef struct %s %s;\n", c->name, c->name);
     }
     fprintf(out, "\n");
 
-    // Emitere prototipuri funcții globale
+    // prototipuri fct globale
     for (FunctionNode* f = ast->functions; f; f = f->next) {
         gen_function_prototype(f, out);
     }
-    // Emitere prototipuri metode de clasă
+    // prototipuri metode din clasa
     for (ClassNode* c = ast->classes; c; c = c->next) {
         for (FunctionNode* m = c->methods; m; m = m->next) {
             gen_class_method_prototype(c, m, out);
@@ -159,17 +158,17 @@ void execute(AST* ast, FILE* out) {
     }
     fprintf(out, "\n");
 
-    // Emitere structuri de clasă și funcțiile aferente
+    // structuri de clasa + functii 
     for (ClassNode* c = ast->classes; c; c = c->next) {
         gen_class(c, out);
     }
-    // Emitere funcții globale NON-main
+    // functii globale (NU main)
     for (FunctionNode* f = ast->functions; f; f = f->next) {
         if (strcmp(f->name, "main") != 0) {
             gen_function(f, out, "");
         }
     }
-    // Emitere funcția main LA FINAL
+    //   main LA FINAL (ultima) 
     for (FunctionNode* f = ast->functions; f; f = f->next) {
         if (strcmp(f->name, "main") == 0) {
             gen_function(f, out, "");
